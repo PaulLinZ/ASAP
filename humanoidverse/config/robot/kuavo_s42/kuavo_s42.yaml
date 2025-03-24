@@ -1,0 +1,411 @@
+# @package _global_
+
+defaults:
+  - robot_base
+
+robot:
+  # Observation parameters
+  num_bodies: 21
+  dof_obs_size: 20
+  actions_dim: 20
+  lower_body_actions_dim: 12 # Yuanhang
+  upper_body_actions_dim: 8 # Yuanhang
+  policy_obs_dim: -1 # Jiawei
+  critic_obs_dim: -1
+  # policy_obs_dim: 45 # Jiawei
+  # critic_obs_dim: 238
+  # policy_obs_dim: 45 # Jiawei
+  # policy_obs_dim: 241 # Jiawei
+  # self_obs_max_coords: 298  # ${eval:1+20*(3+6+3+3)-3}
+
+  key_bodies: ["leg_l6_link", "leg_r6_link"]
+  contact_bodies: [ "leg_l6_link", "leg_r6_link" ]
+  num_feet: 2
+  right_foot_name: "leg_r6_link"
+  left_foot_name: "leg_l6_link"
+  foot_name: "kuavo"
+  knee_name: "kuavo"
+  has_torso: False
+  torso_name: "base_link" # TODO
+  has_upper_body_dof: True
+  dof_names: ['leg_l1_link', 'leg_l2_link', 'leg_l3_link', 'leg_l4_link', 'leg_l5_link', 'leg_l6_link',
+              'leg_r1_link', 'leg_r2_link', 'leg_r3_link', 'leg_r4_link', 'leg_r5_link', 'leg_r6_link',
+              'zarm_l1_link', 'zarm_l2_link', 'zarm_l3_link', 'zarm_l4_link',
+              'zarm_r1_link', 'zarm_r2_link', 'zarm_r3_link', 'zarm_r4_link']
+  upper_dof_names: ['zarm_l1_link', 'zarm_l2_link', 'zarm_l3_link', 'zarm_l4_link', 
+                    'zarm_r1_link', 'zarm_r2_link', 'zarm_r3_link', 'zarm_r4_link']
+  upper_left_arm_dof_names: ['zarm_l1_link', 'zarm_l2_link', 'zarm_l3_link', 'zarm_l4_link']
+  upper_right_arm_dof_names: ['zarm_r1_link', 'zarm_r2_link', 'zarm_r3_link', 'zarm_r4_link']
+  lower_dof_names: ['leg_l1_link', 'leg_l2_link', 'leg_l3_link', 'leg_l4_link', 'leg_l5_link', 'leg_l6_link',
+                    'leg_r1_link', 'leg_r2_link', 'leg_r3_link', 'leg_r4_link', 'leg_r5_link', 'leg_r6_link']
+  waist_dof_names: ['base_link'] # TODO
+  dof_pos_lower_limit_list: [    
+                              -0.31416,  # leg_l1_joint
+                              -1.87266,  # leg_l2_joint
+                              -1.5708,   # leg_l3_joint
+                              0,         # leg_l4_joint
+                              -0.73304,  # leg_l5_joint
+                              -0.5236,   # leg_l6_joint
+                              -0.31416,  # leg_r1_joint
+                              -1.87266,  # leg_r2_joint
+                              -1.5708,   # leg_r3_joint
+                              0,         # leg_r4_joint
+                              -0.73304,  # leg_r5_joint
+                              -0.5236,   # leg_r6_joint
+                              -2.0933,  # zarm_l1_joint
+                              -0.3489,  # zarm_l2_joint
+                              -1.57,    # zarm_l3_joint
+                              -2.0933,  # zarm_l4_joint
+                              -2.0933,  # zarm_r1_joint
+                              -2.0933,  # zarm_r2_joint
+                              -1.57,    # zarm_r3_joint
+                              -2.0933,  # zarm_r4_joint                         
+                           ]
+  dof_pos_upper_limit_list: [
+                              0.66323,   # leg_l1_joint
+                              1.7854,    # leg_l2_joint
+                              2.0071,    # leg_l3_joint
+                              2.618,     # leg_l4_joint
+                              0.38397,   # leg_l5_joint
+                              0.5236,    # leg_l6_joint
+                              0.66323,   # leg_r1_joint
+                              1.7854,    # leg_r2_joint
+                              2.0071,    # leg_r3_joint
+                              2.618,     # leg_r4_joint
+                              0.38397,   # leg_r5_joint
+                              0.5236,    # leg_r6_joint
+                              0.5233,   # zarm_l1_joint
+                              2.0933,   # zarm_l2_joint
+                              1.57,     # zarm_l3_joint
+                              0,        # zarm_l4_joint
+                              0.5233,   # zarm_r1_joint
+                              0.3489,   # zarm_r2_joint
+                              1.57,     # zarm_r3_joint
+                              0,        # zarm_r4_joint
+                            ]
+  dof_vel_limit_list: [32.0, 32.0, 32.0, 20.0, 37.0, 37.0,  # TODO
+                       32.0, 32.0, 32.0, 20.0, 37.0, 37.0, 
+                       37.0, 37.0, 37.0, 37.0, 
+                       37.0, 37.0, 37.0, 37.0]
+  dof_effort_limit_list: [150.0, 150.0, 200.0, 200.0, 90.0, 90.0, 
+                          150.0, 150.0, 200.0, 200.0, 90.0, 90.0, 
+                          150.0, 150.0, 200.0, 200.0, 
+                          150.0, 150.0, 200.0, 200.0]
+  
+  # only apply for isaacsim
+  dof_armature_list: [0.03, 0.03, 0.03, 0.03, 0.03, 0.03,
+                      0.03, 0.03, 0.03, 0.03, 0.03, 0.03,
+                      0.03, 0.03, 0.03,
+                      0.03, 0.03, 0.03, 0.03,
+                      0.04, 0.03, 0.03, 0.03]
+  # only apply for isaacsim
+  dof_joint_friction_list: [0.03, 0.03, 0.03, 0.03, 0.03, 0.03,
+                            0.03, 0.03, 0.03, 0.03, 0.03, 0.03,
+                            0.03, 0.03, 0.03,
+                            0.03, 0.03, 0.03, 0.03,
+                            0.03, 0.03, 0.03, 0.03]
+
+  body_names: ['base_link', 
+              'leg_l1_link', 'leg_l2_link', 'leg_l3_link', 'leg_l4_link', 'leg_l5_link', 'leg_l6_link',
+              'leg_r1_link', 'leg_r2_link', 'leg_r3_link', 'leg_r4_link', 'leg_r5_link', 'leg_r6_link',
+              'zarm_l1_link', 'zarm_l2_link', 'zarm_l3_link', 'zarm_l4_link',
+              'zarm_r1_link', 'zarm_r2_link', 'zarm_r3_link', 'zarm_r4_link']
+
+
+  terminate_after_contacts_on : ['base_link', 'leg_l1_link', 'leg_l2_link', 'leg_l3_link','leg_r1_link', 'leg_r2_link', 'leg_r3_link', 
+                                 'zarm_l1_link', 'zarm_l2_link', 'zarm_l3_link', 'zarm_r1_link', 'zarm_r2_link', 'zarm_r3_link']
+  penalize_contacts_on: ['base_link', 'leg_l1_link', 'leg_l2_link', 'leg_l3_link','leg_r1_link', 'leg_r2_link', 'leg_r3_link', 
+                         'zarm_l1_link', 'zarm_l2_link', 'zarm_l3_link', 'zarm_r1_link', 'zarm_r2_link', 'zarm_r3_link']
+  init_state:
+    pos: [0.0, 0.0, 0.82] # x,y,z [m]
+    rot: [0.0, 0.0, 0.0, 1.0] # x,y,z,w [quat]
+    lin_vel: [0.0, 0.0, 0.0]  # x,y,z [m/s]
+    ang_vel: [0.0, 0.0, 0.0]  # x,y,z [rad/s]
+    default_joint_angles: # = target angles [rad] when action = 0.0
+      leg_l3_joint: -0.1
+      leg_l1_joint: 0.
+      leg_l2_joint: 0.
+      leg_l4_joint: 0.3
+      leg_l5_joint: -0.2
+      leg_l6_joint: 0.
+      leg_r3_joint: -0.1
+      leg_r1_joint: 0.
+      leg_r2_joint: 0.
+      leg_r4_joint: 0.3
+      leg_r5_joint: -0.2
+      leg_r6_joint: 0.
+      zarm_l1_joint: 0.
+      zarm_l2_joint: 0.
+      zarm_l3_joint: 0.
+      zarm_l4_joint: 0.
+      zarm_r1_joint: 0.
+      zarm_r2_joint: 0.
+      zarm_r3_joint: 0.
+      zarm_r4_joint: 0.
+
+
+
+  randomize_link_body_names: [
+    'base_link', 
+    'leg_l1_link', 'leg_l2_link', 'leg_l3_link', 'leg_l4_link',
+    'leg_r1_link', 'leg_r2_link', 'leg_r3_link', 'leg_r4_link',
+  ]
+
+  control:
+    control_type: P
+    # PD Drive parameters:
+    stiffness: # [N*m/rad]
+      leg_l1_joint: 100
+      leg_l2_joint: 100
+      leg_l3_joint: 100
+      leg_l4_joint: 200
+      leg_l5_joint: 20
+      leg_l6_joint: 20
+      leg_r1_joint: 100
+      leg_r2_joint: 100
+      leg_r3_joint: 100
+      leg_r4_joint: 200
+      leg_r5_joint: 20
+      leg_r6_joint: 20
+      zarm_l1_joint: 90
+      zarm_l2_joint: 60
+      zarm_l3_joint: 20
+      zarm_l4_joint: 60
+      zarm_r1_joint: 90
+      zarm_r2_joint: 60
+      zarm_r3_joint: 20
+      zarm_r4_joint: 60
+
+
+    damping: # [N*m/rad]  # [N*m*s/rad]
+      leg_l1_joint: 2.5
+      leg_l2_joint: 2.5
+      leg_l3_joint: 2.5
+      leg_l4_joint: 5.0
+      leg_l5_joint: 0.2
+      leg_l6_joint: 0.1
+      leg_r1_joint: 2.5
+      leg_r2_joint: 2.5
+      leg_r3_joint: 2.5
+      leg_r4_joint: 5.0
+      leg_r5_joint: 0.2
+      leg_r6_joint: 0.1
+      zarm_l1_joint: 2.0
+      zarm_l2_joint: 1.0
+      zarm_l3_joint: 0.4
+      zarm_l4_joint: 1.0
+      zarm_r1_joint: 2.0
+      zarm_r2_joint: 1.0
+      zarm_r3_joint: 0.4
+      zarm_r4_joint: 1.0
+
+    # action scale: target angle = actionScale * action + defaultAngle
+    action_scale: 0.25
+    action_clip_value: 100.0
+    clip_torques: True
+
+  asset:
+    collapse_fixed_joints: True # merge bodies connected by fixed joints. Specific fixed joints can be kept by adding " <... dont_collapse="true">
+    replace_cylinder_with_capsule: True
+    flip_visual_attachments: False
+    armature: 0.001 # isaacgym armature is set by this
+    thickness: 0.01
+    max_angular_velocity: 1000.
+    max_linear_velocity: 1000.
+    density: 0.001
+    angular_damping: 0.
+    linear_damping: 0.
+
+    urdf_file: "kuavo_s42/${robot.asset.robot_type}.urdf"
+    usd_file: "kuavo_s42/${robot.asset.robot_type}.usd"
+    xml_file: "kuavo_s42/${robot.asset.robot_type}.xml"
+    # xml_file: "g1/${robot.asset.robot_type}_fitmotionONLY.xml"
+    robot_type: kuavo_s42
+    self_collisions: 1 # 1 to disable, 0 to enable self collisions
+    default_dof_drive_mode: 3
+
+    fix_base_link: False # TEST: fix base link to world
+
+  motion:
+    motion_file : 'humanoidverse/data/motions/g1_29dof_anneal_23dof/v1/amass_all.pkl'
+    # motion_file : 'humanoidverse/data/motions/g1_29dof/v1/singles/0-ACCAD_Male2General_c3d_A6- Box lift_poses.pkl'
+    asset:
+      assetRoot: "humanoidverse/data/robots/kuavo_s42/"
+      # assetFileName: "g1_29dof_anneal_23dof.xml"
+      assetFileName: "kuavo_s42_fitmotionONLY.xml"
+      urdfFileName: "kuavo_s42.urdf"
+
+    humanoid_type: kuavo_s42
+    bias_offset: False
+    has_self_collision: True
+    has_mesh: False
+    has_jt_limit: False
+    has_dof_subset: True
+    has_upright_start: True
+    has_smpl_pd_offset: False
+    remove_toe: False # For humanoid's geom toe
+    motion_sym_loss: False
+    sym_loss_coef: 1
+    big_ankle: True
+
+    has_shape_obs: false
+    has_shape_obs_disc: false
+    has_shape_variation: False
+
+    masterfoot: False
+    freeze_toe: false
+    freeze_hand: False
+    box_body: True
+    real_weight: True
+    real_weight_porpotion_capsules: True
+    real_weight_porpotion_boxes: True
+
+    body_names: ['base_link', 
+            'leg_l1_link', 'leg_l2_link', 'leg_l3_link', 'leg_l4_link', 'leg_l5_link', 'leg_l6_link',
+            'leg_r1_link', 'leg_r2_link', 'leg_r3_link', 'leg_r4_link', 'leg_r5_link', 'leg_r6_link',
+            'zarm_l1_link', 'zarm_l2_link', 'zarm_l3_link', 'zarm_l4_link',
+            'zarm_r1_link', 'zarm_r2_link', 'zarm_r3_link', 'zarm_r4_link']      
+
+    limb_weight_group: 
+      - ['leg_l1_link', 'leg_l2_link', 'leg_l3_link', 'leg_l4_link', 'leg_l5_link', 'leg_l6_link']
+      - ['leg_r1_link', 'leg_r2_link', 'leg_r3_link', 'leg_r4_link', 'leg_r5_link', 'leg_r6_link']
+      - ['base_link']
+      - ['zarm_l1_link', 'zarm_l2_link', 'zarm_l3_link', 'zarm_l4_link']
+      - ['zarm_r1_link', 'zarm_r2_link', 'zarm_r3_link', 'zarm_r4_link']
+
+    dof_names: ['leg_l1_link', 'leg_l2_link', 'leg_l3_link', 'leg_l4_link', 'leg_l5_link', 'leg_l6_link',
+                'leg_r1_link', 'leg_r2_link', 'leg_r3_link', 'leg_r4_link', 'leg_r5_link', 'leg_r6_link',
+                'zarm_l1_link', 'zarm_l2_link', 'zarm_l3_link', 'zarm_l4_link',
+                'zarm_r1_link', 'zarm_r2_link', 'zarm_r3_link', 'zarm_r4_link']
+    right_foot_name: 'leg_r6_link'
+    left_foot_name: 'leg_l6_link'
+
+
+    nums_extend_bodies: 3  # TODO
+    extend_config:
+      - joint_name: "left_hand_link"
+        parent_name: "zarm_l4_link"
+        pos: [0.25, 0.0, 0.0]
+        rot: [1.0, 0.0, 0.0, 0.0] # w x y z
+      - joint_name: "right_hand_link"
+        parent_name: "zarm_r4_link"
+        pos: [0.25, 0.0, 0.0]
+        rot: [1.0, 0.0, 0.0, 0.0] # w x y z
+      - joint_name: "head_link"
+        parent_name: "base_link"
+        pos: [0.0, 0.0, 0.1]
+        rot: [1.0, 0.0, 0.0, 0.0] # w x y z
+
+
+    motion_tracking_link:
+      - "left_hand_link"
+      - "right_hand_link"
+      - "head_link"
+
+    lower_body_link:
+      - "base_link"
+      - "leg_l1_link"
+      - "leg_l2_link"
+      - "leg_l3_link"
+      - "leg_l4_link"
+      - "leg_l5_link"
+      - "leg_l6_link"
+      - "leg_r1_link"
+      - "leg_r2_link"
+      - "leg_r3_link"
+      - "leg_r4_link"
+      - "leg_r5_link"
+      - "leg_r6_link"
+
+    upper_body_link:
+      - "zarm_l1_link"
+      - "zarm_l2_link"
+      - "zarm_l3_link"
+      - "zarm_l4_link"
+      - "zarm_r1_link"
+      - "zarm_r2_link"
+      - "zarm_r3_link"
+      - "zarm_r4_link"
+      - "left_hand_link"
+      - "right_hand_link"
+      - "head_link"
+
+
+    pelvis_link: "base_link"
+    base_link: "base_link"
+    hips_link:
+      - "leg_l1_link"
+      - "leg_l2_link"
+      - "leg_l3_link"
+      - "leg_r1_link"
+      - "leg_r2_link"
+      - "leg_r3_link"
+    
+    joint_matches:
+      - ["base_link", "Pelvis"]
+      - ["leg_l3_link", "L_Hip"]
+      - ["leg_l4_link", "L_Knee"]
+      - ["leg_l6_link", "L_Ankle"]
+      - ["leg_r3_link", "R_Hip"]
+      - ["leg_r4_link", "R_Knee"]
+      - ["leg_r6_link", "R_Ankle"]
+      - ["zarm_l2_link", "L_Shoulder"]
+      - ["zarm_l4_link", "L_Elbow"]
+      - ["left_hand_link", "L_Hand"]
+      - ["zarm_r2_link", "R_Shoulder"]
+      - ["zarm_r4_link", "R_Elbow"]
+      - ["right_hand_link", "R_Hand"]
+      - ["head_link", "Head"]
+
+
+    smpl_pose_modifier:
+      - Pelvis: "[np.pi/2, 0, np.pi/2]"
+      - L_Shoulder: "[0, 0, -np.pi/2]"
+      - R_Shoulder: "[0, 0, np.pi/2]"
+      - L_Elbow: "[0, -np.pi/2, 0]"
+      - R_Elbow: "[0, np.pi/2, 0]"
+
+    visualization:
+      customize_color : True
+      marker_joint_colors : 
+      - [0.929, 0.867, 0.437] # pelvis
+      - [0.929, 0.867, 0.437] # left_hip_yaw_joint
+      - [0.929, 0.867, 0.437] # left_hip_roll_joint
+      - [0.929, 0.867, 0.437] # left_hip_pitch_joint
+      - [0.929, 0.867, 0.437] # left_knee_joint
+      - [0.929, 0.867, 0.437] # left_ankle_pitch_joint
+      - [0.929, 0.867, 0.437] # left_ankle_roll_joint
+      - [0.929, 0.867, 0.437] # right_hip_yaw_joint
+      - [0.929, 0.867, 0.437] # right_hip_roll_joint
+      - [0.929, 0.867, 0.437] # right_hip_pitch_joint
+      - [0.929, 0.867, 0.437] # right_knee_joint
+      - [0.929, 0.867, 0.437] # right_ankle_pitch_joint
+      - [0.929, 0.867, 0.437] # right_ankle_roll_joint
+      # - [0.929, 0.867, 0.437] # waist_yaw_joint
+      # - [0.929, 0.867, 0.437] # waist_roll_joint
+      # - [0.929, 0.867, 0.437] # torso_joint (waist_pitch_link)
+      - [0.929, 0.867, 0.437] # left_shoulder_pitch_joint
+      - [0.929, 0.867, 0.437] # left_shoulder_roll_joint
+      - [0.929, 0.867, 0.437] # left_shoulder_yaw_joint
+      - [0.929, 0.867, 0.437] # left_elbow_joint
+      - [0.929, 0.867, 0.437] # right_shoulder_pitch_joint
+      - [0.929, 0.867, 0.437] # right_shoulder_roll_joint
+      - [0.929, 0.867, 0.437] # right_shoulder_yaw_joint
+      - [0.929, 0.867, 0.437] # right_elbow_joint
+      - [0, 0.351, 0.613] # left_elbow_joint_extend
+      - [0, 0.351, 0.613] # right_elbow_joint_extend
+      - [0, 0.351, 0.613] # head_link
+
+# Override motion lib default to use the adapted H1 variant
+# motion_lib:
+#   _target_: phys_anim.utils.motion_lib_h1.H1_MotionLib
+
+# Override simulation config to use the adapted H1 variant
+# env:
+#   config:
+#     simulator:
+#       sim:
+#         fps: 200 # 1/dt , dt = 0.005
+#         control_freq_inv: 4  # decimation
+#         substeps: 1
+
