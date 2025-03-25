@@ -50,7 +50,7 @@ class Humanoid_Batch:
         parser = XMLParser(remove_blank_text=True)
         tree = parse(BytesIO(open(self.mjcf_file, "rb").read()), parser=parser,)
         self.dof_axis = []
-
+        # import pdb; pdb.set_trace()
         joints = sorted([j.attrib['name'] for j in tree.getroot().find("worldbody").findall('.//joint')])
         motors = sorted([m.attrib['name'] for m in tree.getroot().find("actuator").getchildren()])
         

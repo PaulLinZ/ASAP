@@ -193,12 +193,12 @@
       </body>
       <body name="neck_motor" pos="-0.0185 0 0.6014">
             <inertial pos="2.15065e-05 0.00604886 -0.0105235" quat="0.673377 -0.223487 0.219366 0.669698" mass="0.0736988" diaginertia="4.68229e-05 3.67344e-05 3.13569e-05" />
-            <joint name="neck_motor" pos="0 0 0" axis="0 0 1" limited="true" range="-1.57 1.57" />
+            <!-- <joint name="neck_motor" pos="0 0 0" axis="0 0 1" limited="true" range="-1.57 1.57" /> -->
             <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="1 1 1 1" mesh="neck_motor" />
             <geom type="mesh" rgba="1 1 1 1" mesh="neck_motor" />
             <body name="head" pos="0 0 0">
                 <inertial pos="0.0288293 -0.000555727 0.109528" quat="0.946713 0.00285973 -0.32153 0.018565" mass="0.621655" diaginertia="0.00252459 0.00223454 0.00172044" />
-                <joint name="head" pos="0 0 0" axis="0 -1 0" limited="true" range="-0.532 0.532" />
+                <!-- <joint name="head" pos="0 0 0" axis="0 -1 0" limited="true" range="-0.532 0.532" /> -->
                 <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="1 1 1 1" mesh="head" />
                 <geom type="mesh" rgba="1 1 1 1" mesh="head" />
                 <geom pos="0.096751 0.0175003 0.125953" quat="0.970296 0 0.241922 0" type="mesh" contype="0" conaffinity="0" group="1" rgba="1 1 1 1" mesh="camera" />
@@ -226,19 +226,19 @@
         <motor gear="1" joint="zarm_l2_joint" name="zarm_l2_motor" ctrllimited="true"  ctrlrange='-150 150'/>
         <motor gear="1" joint="zarm_l3_joint" name="zarm_l3_motor" ctrllimited="true"  ctrlrange='-200 200'/>
         <motor gear="1" joint="zarm_l4_joint" name="zarm_l4_motor" ctrllimited="true"  ctrlrange='-200 200'/>
-        <motor gear="1" joint="zarm_l5_joint" name="zarm_l5_motor" ctrllimited="true"  ctrlrange='-90 90'/>
+        <!-- <motor gear="1" joint="zarm_l5_joint" name="zarm_l5_motor" ctrllimited="true"  ctrlrange='-90 90'/>
         <motor gear="1" joint="zarm_l6_joint" name="zarm_l6_motor" ctrllimited="true"  ctrlrange='-90 90'/>
-        <motor gear="1" joint="zarm_l7_joint" name="zarm_l7_motor" ctrllimited="true"  ctrlrange='-90 90'/>
+        <motor gear="1" joint="zarm_l7_joint" name="zarm_l7_motor" ctrllimited="true"  ctrlrange='-90 90'/> -->
 
         <motor gear="1" joint="zarm_r1_joint" name="zarm_r1_motor" ctrllimited="true"  ctrlrange='-150 150'/>
         <motor gear="1" joint="zarm_r2_joint" name="zarm_r2_motor" ctrllimited="true"  ctrlrange='-150 150'/>
         <motor gear="1" joint="zarm_r3_joint" name="zarm_r3_motor" ctrllimited="true"  ctrlrange='-200 200'/>
         <motor gear="1" joint="zarm_r4_joint" name="zarm_r4_motor" ctrllimited="true"  ctrlrange='-200 200'/>
-        <motor gear="1" joint="zarm_r5_joint" name="zarm_r5_motor" ctrllimited="true"  ctrlrange='-90 90'/>
+        <!-- <motor gear="1" joint="zarm_r5_joint" name="zarm_r5_motor" ctrllimited="true"  ctrlrange='-90 90'/>
         <motor gear="1" joint="zarm_r6_joint" name="zarm_r6_motor" ctrllimited="true"  ctrlrange='-90 90'/>
         <motor gear="1" joint="zarm_r7_joint" name="zarm_r7_motor" ctrllimited="true"  ctrlrange='-90 90'/>
         <motor gear="1" joint="neck_motor" name="head_yaw_motor" ctrllimited="true"  ctrlrange='-90 90'/>
-        <motor gear="1" joint="head" name="head_pitch_motor" ctrllimited="true"  ctrlrange='-90 90'/>
+        <motor gear="1" joint="head" name="head_pitch_motor" ctrllimited="true"  ctrlrange='-90 90'/> -->
   </actuator>
   <sensor>
       <accelerometer name="BodyAcc" site="imu"/>
@@ -265,19 +265,19 @@
       <jointpos name="zarm_l2_pos" joint="zarm_l2_joint"/>
       <jointpos name="zarm_l3_pos" joint="zarm_l3_joint"/>
       <jointpos name="zarm_l4_pos" joint="zarm_l4_joint"/>
-      <jointpos name="zarm_l5_pos" joint="zarm_l5_joint"/>
+      <!-- <jointpos name="zarm_l5_pos" joint="zarm_l5_joint"/>
       <jointpos name="zarm_l6_pos" joint="zarm_l6_joint"/>
-      <jointpos name="zarm_l7_pos" joint="zarm_l7_joint"/>
+      <jointpos name="zarm_l7_pos" joint="zarm_l7_joint"/> -->
 
       <jointpos name="zarm_r1_pos" joint="zarm_r1_joint"/>
       <jointpos name="zarm_r2_pos" joint="zarm_r2_joint"/>
       <jointpos name="zarm_r3_pos" joint="zarm_r3_joint"/>
       <jointpos name="zarm_r4_pos" joint="zarm_r4_joint"/>
-      <jointpos name="zarm_r5_pos" joint="zarm_r5_joint"/>
+      <!-- <jointpos name="zarm_r5_pos" joint="zarm_r5_joint"/>
       <jointpos name="zarm_r6_pos" joint="zarm_r6_joint"/>
       <jointpos name="zarm_r7_pos" joint="zarm_r7_joint"/>
       <jointpos name="head_yaw_pos" joint="neck_motor"/>
-      <jointpos name="head_pitch_pos" joint="head"/>
+      <jointpos name="head_pitch_pos" joint="head"/> -->
 
       <jointvel name="leg_l1_vel" joint="leg_l1_joint"/>
       <jointvel name="leg_l2_vel" joint="leg_l2_joint"/>
@@ -297,18 +297,18 @@
       <jointvel name="zarm_l2_vel" joint="zarm_l2_joint"/>
       <jointvel name="zarm_l3_vel" joint="zarm_l3_joint"/>
       <jointvel name="zarm_l4_vel" joint="zarm_l4_joint"/>
-      <jointvel name="zarm_l5_vel" joint="zarm_l5_joint"/>
+      <!-- <jointvel name="zarm_l5_vel" joint="zarm_l5_joint"/>
       <jointvel name="zarm_l6_vel" joint="zarm_l6_joint"/>
-      <jointvel name="zarm_l7_vel" joint="zarm_l7_joint"/>
+      <jointvel name="zarm_l7_vel" joint="zarm_l7_joint"/> -->
 
       <jointvel name="zarm_r1_vel" joint="zarm_r1_joint"/>
       <jointvel name="zarm_r2_vel" joint="zarm_r2_joint"/>
       <jointvel name="zarm_r3_vel" joint="zarm_r3_joint"/>
       <jointvel name="zarm_r4_vel" joint="zarm_r4_joint"/>
-      <jointvel name="zarm_r5_vel" joint="zarm_r5_joint"/>
+      <!-- <jointvel name="zarm_r5_vel" joint="zarm_r5_joint"/>
       <jointvel name="zarm_r6_vel" joint="zarm_r6_joint"/>
       <jointvel name="zarm_r7_vel" joint="zarm_r7_joint"/>
       <jointvel name="head_yaw_vel" joint="neck_motor"/>
-      <jointvel name="head_pitch_vel" joint="head"/>
+      <jointvel name="head_pitch_vel" joint="head"/> -->
   </sensor>
 </mujoco>

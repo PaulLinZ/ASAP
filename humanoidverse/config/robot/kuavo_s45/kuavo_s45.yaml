@@ -28,70 +28,29 @@ robot:
   has_torso: False
   torso_name: "base_link" # TODO
   has_upper_body_dof: True
-  dof_names: ['leg_l1_link', 'leg_l2_link', 'leg_l3_link', 'leg_l4_link', 'leg_l5_link', 'leg_l6_link',
-              'leg_r1_link', 'leg_r2_link', 'leg_r3_link', 'leg_r4_link', 'leg_r5_link', 'leg_r6_link',
-              'zarm_l1_link', 'zarm_l2_link', 'zarm_l3_link', 'zarm_l4_link',
-              'zarm_r1_link', 'zarm_r2_link', 'zarm_r3_link', 'zarm_r4_link']
-  upper_dof_names: ['zarm_l1_link', 'zarm_l2_link', 'zarm_l3_link', 'zarm_l4_link', 
-                    'zarm_r1_link', 'zarm_r2_link', 'zarm_r3_link', 'zarm_r4_link']
-  upper_left_arm_dof_names: ['zarm_l1_link', 'zarm_l2_link', 'zarm_l3_link', 'zarm_l4_link']
-  upper_right_arm_dof_names: ['zarm_r1_link', 'zarm_r2_link', 'zarm_r3_link', 'zarm_r4_link']
-  lower_dof_names: ['leg_l1_link', 'leg_l2_link', 'leg_l3_link', 'leg_l4_link', 'leg_l5_link', 'leg_l6_link',
-                    'leg_r1_link', 'leg_r2_link', 'leg_r3_link', 'leg_r4_link', 'leg_r5_link', 'leg_r6_link']
-  waist_dof_names: ['base_link'] # TODO
-  dof_pos_lower_limit_list: [    
-                              -0.31416,  # leg_l1_joint
-                              -1.87266,  # leg_l2_joint
-                              -1.5708,   # leg_l3_joint
-                              0,         # leg_l4_joint
-                              -0.73304,  # leg_l5_joint
-                              -0.5236,   # leg_l6_joint
-                              -0.31416,  # leg_r1_joint
-                              -1.87266,  # leg_r2_joint
-                              -1.5708,   # leg_r3_joint
-                              0,         # leg_r4_joint
-                              -0.73304,  # leg_r5_joint
-                              -0.5236,   # leg_r6_joint
-                              -2.0933,  # zarm_l1_joint
-                              -0.3489,  # zarm_l2_joint
-                              -1.57,    # zarm_l3_joint
-                              -2.0933,  # zarm_l4_joint
-                              -2.0933,  # zarm_r1_joint
-                              -2.0933,  # zarm_r2_joint
-                              -1.57,    # zarm_r3_joint
-                              -2.0933,  # zarm_r4_joint                         
-                           ]
-  dof_pos_upper_limit_list: [
-                              0.66323,   # leg_l1_joint
-                              1.7854,    # leg_l2_joint
-                              2.0071,    # leg_l3_joint
-                              2.618,     # leg_l4_joint
-                              0.38397,   # leg_l5_joint
-                              0.5236,    # leg_l6_joint
-                              0.66323,   # leg_r1_joint
-                              1.7854,    # leg_r2_joint
-                              2.0071,    # leg_r3_joint
-                              2.618,     # leg_r4_joint
-                              0.38397,   # leg_r5_joint
-                              0.5236,    # leg_r6_joint
-                              0.5233,   # zarm_l1_joint
-                              2.0933,   # zarm_l2_joint
-                              1.57,     # zarm_l3_joint
-                              0,        # zarm_l4_joint
-                              0.5233,   # zarm_r1_joint
-                              0.3489,   # zarm_r2_joint
-                              1.57,     # zarm_r3_joint
-                              0,        # zarm_r4_joint
-                            ]
-  dof_vel_limit_list: [32.0, 32.0, 32.0, 20.0, 37.0, 37.0,  # TODO
-                       32.0, 32.0, 32.0, 20.0, 37.0, 37.0, 
-                       37.0, 37.0, 37.0, 37.0, 
-                       37.0, 37.0, 37.0, 37.0]
-  dof_effort_limit_list: [150.0, 150.0, 200.0, 200.0, 90.0, 90.0, 
-                          150.0, 150.0, 200.0, 200.0, 90.0, 90.0, 
-                          150.0, 150.0, 200.0, 200.0, 
-                          150.0, 150.0, 200.0, 200.0]
-  
+  dof_names: ['leg_l1_joint', 'leg_l2_joint', 'leg_l3_joint', 'leg_l4_joint', 'leg_l5_joint', 'leg_l6_joint',
+              'leg_r1_joint', 'leg_r2_joint', 'leg_r3_joint', 'leg_r4_joint', 'leg_r5_joint', 'leg_r6_joint',
+              'zarm_l1_joint', 'zarm_l2_joint', 'zarm_l3_joint', 'zarm_l4_joint',
+              'zarm_r1_joint', 'zarm_r2_joint', 'zarm_r3_joint', 'zarm_r4_joint']
+  upper_dof_names: ['zarm_l1_joint', 'zarm_l2_joint', 'zarm_l3_joint', 'zarm_l4_joint', 
+                    'zarm_r1_joint', 'zarm_r2_joint', 'zarm_r3_joint', 'zarm_r4_joint']
+  upper_left_arm_dof_names: ['zarm_l1_joint', 'zarm_l2_joint', 'zarm_l3_joint', 'zarm_l4_joint']
+  upper_right_arm_dof_names: ['zarm_r1_joint', 'zarm_r2_joint', 'zarm_r3_joint', 'zarm_r4_joint']
+  lower_dof_names: ['leg_l1_joint', 'leg_l2_joint', 'leg_l3_joint', 'leg_l4_joint', 'leg_l5_joint', 'leg_l6_joint',
+                    'leg_r1_joint', 'leg_r2_joint', 'leg_r3_joint', 'leg_r4_joint', 'leg_r5_joint', 'leg_r6_joint']
+  waist_dof_names: [] # TODO
+  dof_pos_lower_limit_list: [-0.3142, -0.8727, -2.0071, 0.0, -0.8727, -0.2618, -0.6632, -0.7854, -2.0071, 0.0, -0.8727, -0.2618, -3.1416, -0.3491, -1.5708, -2.618, -3.1416, -2.0944, -1.5708, -2.618]
+  dof_pos_upper_limit_list: [0.6632, 0.7854, 1.5708, 2.5307, 0.3491, 0.2618, 0.3142, 0.8727, 1.5708, 2.5307, 0.3491, 0.2618, 1.5708, 2.0944, 1.5708, 0.0, 1.5708, 0.3491, 1.5708, 0.0]
+
+  dof_vel_limit_list: [23.55, 41.34, 41.34, 23.55, 23.02, 23.02,  # 从urdf找到的最大速度限制
+                       23.55, 41.34, 41.34, 23.55, 23.02, 23.02, 
+                       41.34, 19.15, 18.84, 18.84, 
+                       41.34, 19.15, 18.84, 18.84]
+  dof_effort_limit_list: [180., 100., 100., 180.,  36.,  36., 
+                          180., 100., 100., 180.,  36.,  36.,
+                          100.,  50.,  39.,  50., 
+                          100.,  50.,  39.,  50.]
+
   # only apply for isaacsim
   dof_armature_list: [0.03, 0.03, 0.03, 0.03, 0.03, 0.03,
                       0.03, 0.03, 0.03, 0.03, 0.03, 0.03,
@@ -108,8 +67,8 @@ robot:
   body_names: ['base_link', 
               'leg_l1_link', 'leg_l2_link', 'leg_l3_link', 'leg_l4_link', 'leg_l5_link', 'leg_l6_link',
               'leg_r1_link', 'leg_r2_link', 'leg_r3_link', 'leg_r4_link', 'leg_r5_link', 'leg_r6_link',
-              'zarm_l1_link', 'zarm_l2_link', 'zarm_l3_link', 'zarm_l4_link',
-              'zarm_r1_link', 'zarm_r2_link', 'zarm_r3_link', 'zarm_r4_link']
+              'zarm_l1_link', 'zarm_l2_link', 'zarm_l3_link', 'zarm_l4_link', 'zarm_l5_link', 'zarm_l6_link', 'zarm_l7_link',
+              'zarm_r1_link', 'zarm_r2_link', 'zarm_r3_link', 'zarm_r4_link', 'zarm_r5_link', 'zarm_r6_link', 'zarm_r7_link']
 
 
   terminate_after_contacts_on : ['base_link', 'leg_l1_link', 'leg_l2_link', 'leg_l3_link','leg_r1_link', 'leg_r2_link', 'leg_r3_link', 
@@ -216,11 +175,11 @@ robot:
     angular_damping: 0.
     linear_damping: 0.
 
-    urdf_file: "kuavo_s42/${robot.asset.robot_type}.urdf"
-    usd_file: "kuavo_s42/${robot.asset.robot_type}.usd"
-    xml_file: "kuavo_s42/${robot.asset.robot_type}.xml"
+    urdf_file: "biped_s45/urdf/${robot.asset.robot_type}.urdf"
+    usd_file: "biped_s45/${robot.asset.robot_type}.usd"
+    xml_file: "biped_s45/xml/${robot.asset.robot_type}.xml"
     # xml_file: "g1/${robot.asset.robot_type}_fitmotionONLY.xml"
-    robot_type: kuavo_s42
+    robot_type: biped_s45
     self_collisions: 1 # 1 to disable, 0 to enable self collisions
     default_dof_drive_mode: 3
 
@@ -230,12 +189,12 @@ robot:
     motion_file : 'humanoidverse/data/motions/g1_29dof_anneal_23dof/v1/amass_all.pkl'
     # motion_file : 'humanoidverse/data/motions/g1_29dof/v1/singles/0-ACCAD_Male2General_c3d_A6- Box lift_poses.pkl'
     asset:
-      assetRoot: "humanoidverse/data/robots/kuavo_s42/"
+      assetRoot: "humanoidverse/data/robots/biped_s45/"
       # assetFileName: "g1_29dof_anneal_23dof.xml"
-      assetFileName: "kuavo_s42_fitmotionONLY.xml"
-      urdfFileName: "kuavo_s42.urdf"
+      assetFileName: "xml/biped_s45_fitmotionONLY.xml"
+      urdfFileName: "urdf/biped_s45.urdf"
 
-    humanoid_type: kuavo_s42
+    humanoid_type: biped_s45
     bias_offset: False
     has_self_collision: True
     has_mesh: False

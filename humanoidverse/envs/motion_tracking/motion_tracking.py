@@ -130,7 +130,7 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
                                          dtype=torch.float, 
                                          device=self.device, 
                                          requires_grad=False) # extend
-            
+            # import pdb; pdb.set_trace()
             self.ref_body_pos_extend = torch.zeros(self.num_envs, self.num_bodies + self.num_extend_bodies, 3, dtype=torch.float, device=self.device, requires_grad=False)
             self.dif_global_body_pos = torch.zeros(self.num_envs, self.num_bodies + self.num_extend_bodies, 3, dtype=torch.float, device=self.device, requires_grad=False)
 
@@ -234,7 +234,7 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         motion_times = (self.episode_length_buf + 1) * self.dt + self.motion_start_times # next frames so +1
         # motion_res = self._get_state_from_motionlib_cache_trimesh(self.motion_ids, motion_times, offset= offset)
         motion_res = self._motion_lib.get_motion_state(self.motion_ids, motion_times, offset=offset)
-
+        import pdb; pdb.set_trace()
         ref_body_pos_extend = motion_res["rg_pos_t"]
         self.ref_body_pos_extend[:] = ref_body_pos_extend # for visualization and analysis
         ref_body_vel_extend = motion_res["body_vel_t"] # [num_envs, num_markers, 3]

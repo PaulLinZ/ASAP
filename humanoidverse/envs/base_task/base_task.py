@@ -155,7 +155,10 @@ class BaseTask():
         self.num_dof, self.num_bodies, self.dof_names, self.body_names = self.simulator.num_dof, self.simulator.num_bodies, self.simulator.dof_names, self.simulator.body_names
         
         # check dimensions
-        assert self.num_dof == self.dim_actions, "Number of DOFs must be equal to number of actions"
+        # print("Number of DOFs: ", self.num_dof)
+        # print("Number of actions: ", self.dim_actions)
+        # print("debug")
+        assert self.num_dof == self.dim_actions, "Number of DOFs must be equal `to number of actions"
 
         # other properties
         self.num_bodies = len(self.body_names)

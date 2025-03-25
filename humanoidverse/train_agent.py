@@ -19,6 +19,7 @@ from utils.config_utils import *  # noqa: E402, F403
 
 @hydra.main(config_path="config", config_name="base", version_base="1.1")
 def main(config: OmegaConf):
+    # print(config)
     # import ipdb; ipdb.set_trace()
     simulator_type = config.simulator['_target_'].split('.')[-1]
     # import ipdb; ipdb.set_trace()
@@ -107,8 +108,9 @@ def main(config: OmegaConf):
     #     fabric.seed_everything(config.seed + rank)
     #     seeding(config.seed + rank, torch_deterministic=config.torch_deterministic)
     config.env.config.save_rendering_dir = str(Path(config.experiment_dir) / "renderings_training")
-    env: BaseEnv = instantiate(config=config.env, device=device)
+    # print(OmegaConf.to_yaml(config.env))
 
+    env: BaseEnv = instantiate(config=config.env, device=device)
 
     experiment_save_dir = Path(config.experiment_dir)
     experiment_save_dir.mkdir(exist_ok=True, parents=True)

@@ -1,5 +1,5 @@
 <mujoco model="biped_s41">
-  <compiler angle="radian" meshdir="../meshes/"/>
+  <compiler angle="radian" meshdir="./meshes"/>
   <size njmax="500" nconmax="100" />
   <asset>
     <texture type="skybox" builtin="gradient" rgb1="0.4 0.6 0.8" width="128" height="128"/>
@@ -137,15 +137,15 @@
               <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="1 1 1 1" mesh="l_forearm_pitch"/>
               <body name="zarm_l5_link" pos="0 0 -0.19105">
                 <inertial pos="0.000113133 0.00969228 0.0817961" quat="0.493085 0.506908 0.492087 0.507703" mass="0.380792" diaginertia="0.000122264 8.44608e-05 7.64924e-05"/>
-                <joint name="zarm_l5_joint" pos="0 0 0" axis="0 0 1" range="-1.657 1.657" actuatorfrcrange="-6 6" damping='0.2' />
+                <!-- <joint name="zarm_l5_joint" pos="0 0 0" axis="0 0 1" range="-1.657 1.657" actuatorfrcrange="-6 6" damping='0.2' /> -->
                 <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="1 1 1 1" mesh="l_hand_yaw"/>
                 <body name="zarm_l6_link">
                   <inertial pos="0.0081061 0.00489663 0.00622489" quat="0.972746 -0.202646 -0.0967872 0.0577326" mass="0.376651" diaginertia="4.90153e-05 3.61802e-05 2.19136e-05"/>
-                  <joint name="zarm_l6_joint" pos="0 0 0" axis="0 1 0" range="-1.657 1.657" actuatorfrcrange="-6 6" damping='0.2' />
+                  <!-- <joint name="zarm_l6_joint" pos="0 0 0" axis="0 1 0" range="-1.657 1.657" actuatorfrcrange="-6 6" damping='0.2' /> -->
                   <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="1 1 1 1" mesh="l_hand_pitch"/>
                   <body name="zarm_l7_link">
                     <inertial pos="0.00557087 0.00644656 -0.0826894" quat="0.378878 0.570642 0.285709 0.670216" mass="0.705193" diaginertia="0.000126318 0.000107575 8.42004e-05"/>
-                    <joint name="zarm_l7_joint" pos="0 0 0" axis="1 0 0" range="-1.57 1.57" actuatorfrcrange="-6 6" damping='0.2' />
+                    <!-- <joint name="zarm_l7_joint" pos="0 0 0" axis="1 0 0" range="-1.57 1.57" actuatorfrcrange="-6 6" damping='0.2' /> -->
                     <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="1 1 1 1" mesh="l_hand_roll"/>
                     <geom size="0.005" pos="0 -0.03 -0.17"/>
                   </body>
@@ -173,15 +173,15 @@
               <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="1 1 1 1" mesh="r_forearm_pitch"/>
               <body name="zarm_r5_link" pos="0 0 -0.19105">
                 <inertial pos="-0.000113133 -0.00974484 0.0817961" quat="0.506908 0.493085 0.507703 0.492087" mass="0.380792" diaginertia="0.000122264 8.44608e-05 7.64924e-05"/>
-                <joint name="zarm_r5_joint" pos="0 0 0" axis="0 0 1" range="-1.657 1.657" actuatorfrcrange="-6 6" damping='0.2' />
+                <!-- <joint name="zarm_r5_joint" pos="0 0 0" axis="0 0 1" range="-1.657 1.657" actuatorfrcrange="-6 6" damping='0.2' /> -->
                 <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="1 1 1 1" mesh="r_hand_yaw"/>
                 <body name="zarm_r6_link">
                   <inertial pos="0.00735987 -0.00475238 0.00605888" quat="0.97227 0.205866 -0.0962427 -0.0552063" mass="0.376651" diaginertia="4.89785e-05 3.6108e-05 2.20226e-05"/>
-                  <joint name="zarm_r6_joint" pos="0 0 0" axis="0 1 0" range="-1.657 1.657" actuatorfrcrange="-6 6" damping='0.2' />
+                  <!-- <joint name="zarm_r6_joint" pos="0 0 0" axis="0 1 0" range="-1.657 1.657" actuatorfrcrange="-6 6" damping='0.2' /> -->
                   <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="1 1 1 1" mesh="r_hand_pitch"/>
                   <body name="zarm_r7_link">
                     <inertial pos="0.00459104 -0.00584264 -0.0836966" quat="0.678609 0.268346 0.578196 0.364925" mass="0.705193" diaginertia="0.000247322 0.000207835 0.000163356"/>
-                    <joint name="zarm_r7_joint" pos="0 0 0" axis="1 0 0" range="-1.57 1.57" actuatorfrcrange="-6 6" damping='0.2' />
+                    <!-- <joint name="zarm_r7_joint" pos="0 0 0" axis="1 0 0" range="-1.57 1.57" actuatorfrcrange="-6 6" damping='0.2' /> -->
                     <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="1 1 1 1" mesh="r_hand_roll"/>
                     <geom size="0.005" pos="0 0.03 -0.17"/>
                   </body>
@@ -191,7 +191,7 @@
           </body>
         </body>
       </body>
-      <body name="neck_motor" pos="-0.0185 0 0.6014">
+      <!-- <body name="neck_motor" pos="-0.0185 0 0.6014">
             <inertial pos="2.15065e-05 0.00604886 -0.0105235" quat="0.673377 -0.223487 0.219366 0.669698" mass="0.0736988" diaginertia="4.68229e-05 3.67344e-05 3.13569e-05" />
             <joint name="neck_motor" pos="0 0 0" axis="0 0 1" limited="true" range="-1.57 1.57" />
             <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="1 1 1 1" mesh="neck_motor" />
@@ -204,7 +204,7 @@
                 <geom pos="0.096751 0.0175003 0.125953" quat="0.970296 0 0.241922 0" type="mesh" contype="0" conaffinity="0" group="1" rgba="1 1 1 1" mesh="camera" />
                 <geom pos="0.096751 0.0175003 0.125953" quat="0.970296 0 0.241922 0" type="mesh" rgba="1 1 1 1" mesh="camera" />
           </body>
-      </body>
+      </body> -->
     </body>
   </worldbody>
   <actuator>
@@ -226,19 +226,19 @@
         <motor gear="1" joint="zarm_l2_joint" name="zarm_l2_motor" ctrllimited="true"  ctrlrange='-150 150'/>
         <motor gear="1" joint="zarm_l3_joint" name="zarm_l3_motor" ctrllimited="true"  ctrlrange='-200 200'/>
         <motor gear="1" joint="zarm_l4_joint" name="zarm_l4_motor" ctrllimited="true"  ctrlrange='-200 200'/>
-        <motor gear="1" joint="zarm_l5_joint" name="zarm_l5_motor" ctrllimited="true"  ctrlrange='-90 90'/>
+        <!-- <motor gear="1" joint="zarm_l5_joint" name="zarm_l5_motor" ctrllimited="true"  ctrlrange='-90 90'/>
         <motor gear="1" joint="zarm_l6_joint" name="zarm_l6_motor" ctrllimited="true"  ctrlrange='-90 90'/>
-        <motor gear="1" joint="zarm_l7_joint" name="zarm_l7_motor" ctrllimited="true"  ctrlrange='-90 90'/>
+        <motor gear="1" joint="zarm_l7_joint" name="zarm_l7_motor" ctrllimited="true"  ctrlrange='-90 90'/> -->
 
         <motor gear="1" joint="zarm_r1_joint" name="zarm_r1_motor" ctrllimited="true"  ctrlrange='-150 150'/>
         <motor gear="1" joint="zarm_r2_joint" name="zarm_r2_motor" ctrllimited="true"  ctrlrange='-150 150'/>
         <motor gear="1" joint="zarm_r3_joint" name="zarm_r3_motor" ctrllimited="true"  ctrlrange='-200 200'/>
         <motor gear="1" joint="zarm_r4_joint" name="zarm_r4_motor" ctrllimited="true"  ctrlrange='-200 200'/>
-        <motor gear="1" joint="zarm_r5_joint" name="zarm_r5_motor" ctrllimited="true"  ctrlrange='-90 90'/>
+        <!-- <motor gear="1" joint="zarm_r5_joint" name="zarm_r5_motor" ctrllimited="true"  ctrlrange='-90 90'/>
         <motor gear="1" joint="zarm_r6_joint" name="zarm_r6_motor" ctrllimited="true"  ctrlrange='-90 90'/>
         <motor gear="1" joint="zarm_r7_joint" name="zarm_r7_motor" ctrllimited="true"  ctrlrange='-90 90'/>
         <motor gear="1" joint="neck_motor" name="head_yaw_motor" ctrllimited="true"  ctrlrange='-90 90'/>
-        <motor gear="1" joint="head" name="head_pitch_motor" ctrllimited="true"  ctrlrange='-90 90'/>
+        <motor gear="1" joint="head" name="head_pitch_motor" ctrllimited="true"  ctrlrange='-90 90'/> -->
   </actuator>
   <sensor>
       <accelerometer name="BodyAcc" site="imu"/>
@@ -265,19 +265,19 @@
       <jointpos name="zarm_l2_pos" joint="zarm_l2_joint"/>
       <jointpos name="zarm_l3_pos" joint="zarm_l3_joint"/>
       <jointpos name="zarm_l4_pos" joint="zarm_l4_joint"/>
-      <jointpos name="zarm_l5_pos" joint="zarm_l5_joint"/>
+      <!-- <jointpos name="zarm_l5_pos" joint="zarm_l5_joint"/>
       <jointpos name="zarm_l6_pos" joint="zarm_l6_joint"/>
-      <jointpos name="zarm_l7_pos" joint="zarm_l7_joint"/>
+      <jointpos name="zarm_l7_pos" joint="zarm_l7_joint"/> -->
 
       <jointpos name="zarm_r1_pos" joint="zarm_r1_joint"/>
       <jointpos name="zarm_r2_pos" joint="zarm_r2_joint"/>
       <jointpos name="zarm_r3_pos" joint="zarm_r3_joint"/>
       <jointpos name="zarm_r4_pos" joint="zarm_r4_joint"/>
-      <jointpos name="zarm_r5_pos" joint="zarm_r5_joint"/>
+      <!-- <jointpos name="zarm_r5_pos" joint="zarm_r5_joint"/>
       <jointpos name="zarm_r6_pos" joint="zarm_r6_joint"/>
       <jointpos name="zarm_r7_pos" joint="zarm_r7_joint"/>
       <jointpos name="head_yaw_pos" joint="neck_motor"/>
-      <jointpos name="head_pitch_pos" joint="head"/>
+      <jointpos name="head_pitch_pos" joint="head"/> -->
 
       <jointvel name="leg_l1_vel" joint="leg_l1_joint"/>
       <jointvel name="leg_l2_vel" joint="leg_l2_joint"/>
@@ -297,18 +297,18 @@
       <jointvel name="zarm_l2_vel" joint="zarm_l2_joint"/>
       <jointvel name="zarm_l3_vel" joint="zarm_l3_joint"/>
       <jointvel name="zarm_l4_vel" joint="zarm_l4_joint"/>
-      <jointvel name="zarm_l5_vel" joint="zarm_l5_joint"/>
+      <!-- <jointvel name="zarm_l5_vel" joint="zarm_l5_joint"/>
       <jointvel name="zarm_l6_vel" joint="zarm_l6_joint"/>
-      <jointvel name="zarm_l7_vel" joint="zarm_l7_joint"/>
+      <jointvel name="zarm_l7_vel" joint="zarm_l7_joint"/> -->
 
       <jointvel name="zarm_r1_vel" joint="zarm_r1_joint"/>
       <jointvel name="zarm_r2_vel" joint="zarm_r2_joint"/>
       <jointvel name="zarm_r3_vel" joint="zarm_r3_joint"/>
       <jointvel name="zarm_r4_vel" joint="zarm_r4_joint"/>
-      <jointvel name="zarm_r5_vel" joint="zarm_r5_joint"/>
+      <!-- <jointvel name="zarm_r5_vel" joint="zarm_r5_joint"/>
       <jointvel name="zarm_r6_vel" joint="zarm_r6_joint"/>
       <jointvel name="zarm_r7_vel" joint="zarm_r7_joint"/>
       <jointvel name="head_yaw_vel" joint="neck_motor"/>
-      <jointvel name="head_pitch_vel" joint="head"/>
+      <jointvel name="head_pitch_vel" joint="head"/> -->
   </sensor>
 </mujoco>
