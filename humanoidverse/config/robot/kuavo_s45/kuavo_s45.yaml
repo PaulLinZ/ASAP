@@ -240,7 +240,7 @@ robot:
     left_foot_name: 'leg_l6_link'
 
 
-    nums_extend_bodies: 3  # TODO
+    nums_extend_bodies: 0  # TODO
     extend_config:
       - joint_name: "left_hand_link"
         parent_name: "zarm_l4_link"
