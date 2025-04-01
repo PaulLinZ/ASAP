@@ -42,7 +42,7 @@ class MotionLibKuavo:
         print(f"数据成功加载自 {self.m_cfg.motion_file}")
 
 
-    def get_motion_state(self,motion_ids, motion_times, offset=0):
+    def get_motion_state(self,motion_ids, motion_times, offset=None):
         """
         获取特定的运动状态数据
 
@@ -52,6 +52,8 @@ class MotionLibKuavo:
         """
         if self.root_quat is None:
             raise ValueError("数据尚未加载。请先调用 load_data_from_npz 方法加载数据。")
+        
+        # import ipdb; ipdb.set_trace()
 
         motion_state = {}
         frame_idx0, frame_idx1, blend = self._calc_frame_blend(motion_times, self.motion_duration, self.frame_len, self._motion_dt)
@@ -84,8 +86,9 @@ class MotionLibKuavo:
             motion_state[key] = motion_state[key].expand(new_shape)
             
             # print(key, motion_state[key].shape)
-        
-
+        # import ipdb; ipdb.set_trace()
+        if offset is not None:
+            motion_state["root_pos"] = motion_state["root_pos"] + offset
         
         return motion_state
 

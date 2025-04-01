@@ -235,8 +235,8 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         B = self.motion_ids.shape[0]
         motion_times = (self.episode_length_buf + 1) * self.dt + self.motion_start_times # next frames so +1
         # motion_res = self._get_state_from_motionlib_cache_trimesh(self.motion_ids, motion_times, offset= offset)
-        import ipdb; ipdb.set_trace()
-        motion_res = self._motion_lib.get_motion_state(self.motion_ids, motion_times)    # motion_ids是[0...4095], motion_times是一些时间
+        # import ipdb; ipdb.set_trace()
+        motion_res = self._motion_lib.get_motion_state(self.motion_ids, motion_times, offset= offset)    # motion_ids是[0...4095], motion_times是一些时间
 
         ref_body_pos_extend = motion_res["rg_pos_t"]    # body_rigid_pos
         self.ref_body_pos_extend[:] = ref_body_pos_extend # for visualization and analysis
@@ -427,7 +427,7 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         else:
             motion_times = (self.episode_length_buf) * self.dt + self.motion_start_times # next frames so +1
             offset = self.env_origins
-            motion_res = self._motion_lib.get_motion_state(self.motion_ids, motion_times)
+            motion_res = self._motion_lib.get_motion_state(self.motion_ids, motion_times, offset=offset)
 
 
             root_pos_noise = self.config.init_noise_scale.root_pos * self.config.noise_to_initial_level
@@ -478,7 +478,7 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
 
         motion_times = (self.episode_length_buf) * self.dt + self.motion_start_times # next frames so +1
         offset = self.env_origins
-        motion_res = self._motion_lib.get_motion_state(self.motion_ids, motion_times)
+        motion_res = self._motion_lib.get_motion_state(self.motion_ids, motion_times, offset=offset)
 
         dof_pos_noise = self.config.init_noise_scale.dof_pos * self.config.noise_to_initial_level
         dof_vel_noise = self.config.init_noise_scale.dof_vel * self.config.noise_to_initial_level
