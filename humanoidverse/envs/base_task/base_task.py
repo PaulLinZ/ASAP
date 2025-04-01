@@ -181,15 +181,17 @@ class BaseTask():
                                     self.base_init_state)
 
     def _setup_robot_body_indices(self):
-        feet_names = [s for s in self.body_names if self.config.robot.foot_name in s]
-        knee_names = [s for s in self.body_names if self.config.robot.knee_name in s]
+        # feet_names = [s for s in self.body_names if self.config.robot.foot_name in s]
+        # knee_names = [s for s in self.body_names if self.config.robot.knee_name in s]
+        feet_names = [s for s in self.body_names if s in self.config.robot.foot_name]
+        knee_names = [s for s in self.body_names if s in self.config.robot.knee_name]
         penalized_contact_names = []
         for name in self.config.robot.penalize_contacts_on:
             penalized_contact_names.extend([s for s in self.body_names if name in s])
         termination_contact_names = []
         for name in self.config.robot.terminate_after_contacts_on:
             termination_contact_names.extend([s for s in self.body_names if name in s])
-
+        # import ipdb; ipdb.set_trace()
         self.feet_indices = torch.zeros(len(feet_names), dtype=torch.long, device=self.device, requires_grad=False)
         for i in range(len(feet_names)):
             self.feet_indices[i] = self.simulator.find_rigid_body_indice(feet_names[i])

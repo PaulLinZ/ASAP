@@ -197,6 +197,7 @@ class LeggedRobotBase(BaseTask):
         Args:
             actions (torch.Tensor): Tensor of shape (num_envs, num_actions_per_env)
         """
+        # import ipdb; ipdb.set_trace()
         actions = actor_state["actions"]
         # actions *= 0.0
         self._pre_physics_step(actions)
@@ -240,7 +241,7 @@ class LeggedRobotBase(BaseTask):
         # update counters
         self._update_counters_each_step()
         self.last_episode_length_buf = self.episode_length_buf.clone()
-
+        # import ipdb; ipdb.set_trace()
         self._pre_compute_observations_callback()
         self._update_tasks_callback()
         # compute observations, rewards, resets, ...
@@ -718,6 +719,7 @@ class LeggedRobotBase(BaseTask):
         # Penalize dof velocities too close to the limit
         # clip to max error = 1 rad/s per joint to avoid huge penalties
         if self.use_reward_limits_dof_vel_curriculum:
+            # import ipdb; ipdb.set_trace()
             return torch.sum((torch.abs(self.simulator.dof_vel) - self.dof_vel_limits * self.soft_dof_vel_curriculum_value).clip(min=0., max=1.), dim=1)
         else:
             return torch.sum((torch.abs(self.simulator.dof_vel) - self.dof_vel_limits * self.config.rewards.reward_limit.soft_dof_vel_limit).clip(min=0., max=1.), dim=1)
@@ -768,6 +770,7 @@ class LeggedRobotBase(BaseTask):
         return heading_diff_left + heading_diff_right
     
     def _reward_penalty_feet_ori(self):
+        # import ipdb; ipdb.set_trace()
         left_quat = self.simulator._rigid_body_rot[:, self.feet_indices[0]]
         left_gravity = quat_rotate_inverse(left_quat, self.gravity_vec)
         right_quat = self.simulator._rigid_body_rot[:, self.feet_indices[1]]

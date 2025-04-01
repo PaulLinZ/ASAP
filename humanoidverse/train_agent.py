@@ -16,6 +16,11 @@ from loguru import logger
 
 from utils.config_utils import *  # noqa: E402, F403
 
+# from hydra import initialize,compose
+# with initialize(config_path="config"):
+#     cfg = compose(config_name="base")
+#     print(cfg)  
+
 
 @hydra.main(config_path="config", config_name="base", version_base="1.1")
 def main(config: OmegaConf):
@@ -118,7 +123,7 @@ def main(config: OmegaConf):
     logger.info(f"Saving config file to {experiment_save_dir}")
     with open(experiment_save_dir / "config.yaml", "w") as file:
         OmegaConf.save(unresolved_conf, file)
-
+    # import ipdb; ipdb.set_trace()
     algo: BaseAlgo = instantiate(device=device, env=env, config=config.algo, log_dir=experiment_save_dir)
     algo.setup()
     # import ipdb;    ipdb.set_trace()

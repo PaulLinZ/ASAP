@@ -194,7 +194,7 @@ def quat_to_angle_axis(q):
     axis = torch.where(mask_expand, axis, default_axis)
     return angle, axis
 
-@torch.jit.script
+# @torch.jit.script
 def slerp(q0, q1, t):
     # type: (Tensor, Tensor, Tensor) -> Tensor
     cos_half_theta = torch.sum(q0 * q1, dim=-1)

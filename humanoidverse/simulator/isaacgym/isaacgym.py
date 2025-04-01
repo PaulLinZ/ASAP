@@ -152,12 +152,13 @@ class IsaacGym(BaseSimulator):
         asset_file = self.robot_config.asset.xml_file
         self.robot_asset = self._setup_robot_asset_when_env_created(asset_root, asset_file, self.robot_config.asset)
         self.num_dof, self.num_bodies, self.dof_names, self.body_names = self._setup_robot_props_when_env_created()
-        
+        #TODO:        
+        # self.num_bodies = len(self.robot_config.body_names)
+        # self.body_names = self.robot_config.body_names
+
         # assert if  aligns with config
         print('gym and config num_dof:',self.num_dof,len(self.robot_config.dof_names))
         print('gym and config num_bodies:',self.num_bodies,len(self.robot_config.body_names))
-        # print(self.dof_names,self.robot_config.dof_names)
-        # print(self.body_names,self.robot_config.body_names)
         assert self.num_dof == len(self.robot_config.dof_names), "Number of DOFs must be equal to number of actions"
         assert self.num_bodies == len(self.robot_config.body_names), "Number of bodies must be equal to number of body names"
         assert self.dof_names == self.robot_config.dof_names, "DOF names must match the config"
@@ -403,16 +404,23 @@ class IsaacGym(BaseSimulator):
 
     def get_dof_limits_properties(self):
         # assert the isaacgym dof limits are the same as the config
+        # temp_dof_vel_limits = np.array(self.robot_config.dof_vel_limit_list)
+        # self.dof_vel_limits = torch.from_numpy(temp_dof_vel_limits).to(self.device).to(torch.float)
+        joint_limits = self.get_velocity_limits_from_urdf()
+        joint_names = list(joint_limits.keys())[:self.num_dof]  # 假设前 num_dof 个关节
+        
+        for i, joint_name in enumerate(joint_names):
+            print(joint_name, joint_limits[joint_name])
+            self.dof_vel_limits[i] = joint_limits[joint_name]
 
-        self.dof_vel_limits = self.robot_config.dof_vel_limit_list
         self.torque_limits = self.get_torque_limit_from_mujoco()
 
         for i in range(self.num_dof):
-            # import pdb; pdb.set_trace()
+            # import ipdb; ipdb.set_trace()
             assert abs(self.hard_dof_pos_limits[i, 0].item() - self.robot_config.dof_pos_lower_limit_list[i]) < 1e-4, f"DOF {i} lower limit does not match"
             assert abs(self.hard_dof_pos_limits[i, 1].item() - self.robot_config.dof_pos_upper_limit_list[i]) < 1e-4, f"DOF {i} upper limit does not match"
-            # assert abs(self.dof_vel_limits[i].item() - self.robot_config.dof_vel_limit_list[i]) < 1e-5, f"DOF {i} velocity limit does not match"
-            assert abs(self.torque_limits[i].item() - self.robot_config.dof_effort_limit_list[i]) < 1e-5, f"DOF {i} effort limit does not match"
+            assert abs(self.dof_vel_limits[i].item() - self.robot_config.dof_vel_limit_list[i]) < 1e-4, f"DOF {i} velocity limit does not match"
+            assert abs(self.torque_limits[i].item() - self.robot_config.dof_effort_limit_list[i]) < 1e-4, f"DOF {i} effort limit does not match"
             # assert self.dof_pos_hard_dof_pos_limitslimits[i, 1].item() == self.robot_config.dof_pos_upper_limit_list[i], f"DOF {i} upper limit does not match"
             # assert self.dof_vel_limits[i].item() == self.robot_config.dof_vel_limit_list[i], f"DOF {i} velocity limit does not match"
             # assert self.torque_limits[i].item() == self.robot_config.dof_effort_limit_list[i], f"DOF {i} effort limit does not match"
@@ -430,7 +438,40 @@ class IsaacGym(BaseSimulator):
         asset_file = self.robot_config.asset.xml_file
         asset_path = os.path.join(asset_root, asset_file)
         model = mujoco.MjModel.from_xml_path(asset_path)
-        return torch.from_numpy(model.actuator_ctrlrange[:, 0]).to(self.device).to(torch.float32).abs()
+        return torch.from_numpy(model.actuator_ctrlrange[:, 0]).to(self.device).to(torch.float).abs()
+
+    def get_velocity_limits_from_urdf(self):
+        import xml.etree.ElementTree as ET
+        asset_root = self.robot_config.asset.asset_root
+        asset_file = self.robot_config.asset.urdf_file
+        asset_path = os.path.join(asset_root, asset_file)
+        tree = ET.parse(asset_path)
+        root = tree.getroot()
+        joint_vel_limits = {}
+        
+        for joint in root.findall(".//joint"):
+            joint_name = joint.get("name")
+            limit = joint.find("limit")
+            if limit is not None and "velocity" in limit.attrib:
+                joint_vel_limits[joint_name] = float(limit.attrib["velocity"])
+        print(joint_vel_limits)
+        return joint_vel_limits
+
+    # def set_velocity_limits_from_urdf(self):
+    #     from urdfpy import URDF
+    #     asset_root = self.robot_config.asset.asset_root
+    #     asset_file = self.robot_config.asset.urdf_file
+    #     asset_path = os.path.join(asset_root, asset_file)
+    #     urdf = URDF.load(asset_path)
+    #     import ipdb; ipdb.set_trace()
+    #     for i, joint in enumerate(urdf.actuated_joints):
+    #         if joint.limit and joint.limit.velocity is not None:
+    #             print(joint.name, joint.limit.velocity)
+    #             self.dof_vel_limits[i] = joint.limit.velocity
+    #         else:
+    #             self.dof_vel_limits[i] = float("inf")  # 默认设置为无限大，防止 None 值出错
+    #     print(self.dof_vel_limits)
+    
 
     def find_rigid_body_indice(self, body_name):
         return self.gym.find_actor_rigid_body_handle(self.envs[0], self.robot_handles[0], body_name)

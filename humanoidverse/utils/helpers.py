@@ -31,7 +31,7 @@ def pre_process_config(config) -> None:
     # compute observation_dim
     # config.robot.policy_obs_dim = -1
     # config.robot.critic_obs_dim = -1
-    
+    # import ipdb; ipdb.set_trace()
     obs_dim_dict = dict()
     _obs_key_list = config.env.config.obs.obs_dict
     _aux_obs_key_list = config.env.config.obs.obs_auxiliary

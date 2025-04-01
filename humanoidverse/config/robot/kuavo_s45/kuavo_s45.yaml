@@ -23,8 +23,8 @@ robot:
   num_feet: 2
   right_foot_name: "leg_r6_link"
   left_foot_name: "leg_l6_link"
-  foot_name: "kuavo"
-  knee_name: "kuavo"
+  foot_name: ["leg_l6_link", "leg_r6_link"]
+  knee_name: ["leg_l4_link", "leg_r4_link"]
   has_torso: False
   torso_name: "base_link" # TODO
   has_upper_body_dof: True
@@ -39,8 +39,14 @@ robot:
   lower_dof_names: ['leg_l1_joint', 'leg_l2_joint', 'leg_l3_joint', 'leg_l4_joint', 'leg_l5_joint', 'leg_l6_joint',
                     'leg_r1_joint', 'leg_r2_joint', 'leg_r3_joint', 'leg_r4_joint', 'leg_r5_joint', 'leg_r6_joint']
   waist_dof_names: [] # TODO
-  dof_pos_lower_limit_list: [-0.3142, -0.8727, -2.0071, 0.0, -0.8727, -0.2618, -0.6632, -0.7854, -2.0071, 0.0, -0.8727, -0.2618, -3.1416, -0.3491, -1.5708, -2.618, -3.1416, -2.0944, -1.5708, -2.618]
-  dof_pos_upper_limit_list: [0.6632, 0.7854, 1.5708, 2.5307, 0.3491, 0.2618, 0.3142, 0.8727, 1.5708, 2.5307, 0.3491, 0.2618, 1.5708, 2.0944, 1.5708, 0.0, 1.5708, 0.3491, 1.5708, 0.0]
+  dof_pos_lower_limit_list: [-0.3142, -0.8727, -2.0071, 0.0, -0.8727, -0.2618, 
+                             -0.6632, -0.7854, -2.0071, 0.0, -0.8727, -0.2618, 
+                             -3.1416, -0.3491, -1.5708, -2.618, 
+                             -3.1416, -2.0944, -1.5708, -2.618]
+  dof_pos_upper_limit_list: [0.6632, 0.7854, 1.5708, 2.5307, 0.3491, 0.2618, 
+                             0.3142, 0.8727, 1.5708, 2.5307, 0.3491, 0.2618, 
+                             1.5708, 2.0944, 1.5708, 0.0, 
+                             1.5708, 0.3491, 1.5708, 0.0]
 
   dof_vel_limit_list: [23.55, 41.34, 41.34, 23.55, 23.02, 23.02,  # 从urdf找到的最大速度限制
                        23.55, 41.34, 41.34, 23.55, 23.02, 23.02, 
@@ -67,8 +73,8 @@ robot:
   body_names: ['base_link', 
               'leg_l1_link', 'leg_l2_link', 'leg_l3_link', 'leg_l4_link', 'leg_l5_link', 'leg_l6_link',
               'leg_r1_link', 'leg_r2_link', 'leg_r3_link', 'leg_r4_link', 'leg_r5_link', 'leg_r6_link',
-              'zarm_l1_link', 'zarm_l2_link', 'zarm_l3_link', 'zarm_l4_link', 'zarm_l5_link', 'zarm_l6_link', 'zarm_l7_link',
-              'zarm_r1_link', 'zarm_r2_link', 'zarm_r3_link', 'zarm_r4_link', 'zarm_r5_link', 'zarm_r6_link', 'zarm_r7_link']
+              'zarm_l1_link', 'zarm_l2_link', 'zarm_l3_link', 'zarm_l4_link',
+              'zarm_r1_link', 'zarm_r2_link', 'zarm_r3_link', 'zarm_r4_link',]
 
 
   terminate_after_contacts_on : ['base_link', 'leg_l1_link', 'leg_l2_link', 'leg_l3_link','leg_r1_link', 'leg_r2_link', 'leg_r3_link', 
@@ -177,8 +183,8 @@ robot:
 
     urdf_file: "biped_s45/urdf/${robot.asset.robot_type}.urdf"
     usd_file: "biped_s45/${robot.asset.robot_type}.usd"
-    xml_file: "biped_s45/xml/${robot.asset.robot_type}.xml"
-    # xml_file: "g1/${robot.asset.robot_type}_fitmotionONLY.xml"
+    # xml_file: "biped_s45/xml/${robot.asset.robot_type}.xml"
+    xml_file: "biped_s45/xml/${robot.asset.robot_type}_fitmotionONLY.xml"
     robot_type: biped_s45
     self_collisions: 1 # 1 to disable, 0 to enable self collisions
     default_dof_drive_mode: 3
@@ -240,7 +246,7 @@ robot:
     left_foot_name: 'leg_l6_link'
 
 
-    nums_extend_bodies: 0  # TODO
+    nums_extend_bodies: 3  # TODO
     extend_config:
       - joint_name: "left_hand_link"
         parent_name: "zarm_l4_link"
@@ -252,7 +258,7 @@ robot:
         rot: [1.0, 0.0, 0.0, 0.0] # w x y z
       - joint_name: "head_link"
         parent_name: "base_link"
-        pos: [0.0, 0.0, 0.1]
+        pos: [0.0, 0.0, 0.6]
         rot: [1.0, 0.0, 0.0, 0.0] # w x y z
 
 

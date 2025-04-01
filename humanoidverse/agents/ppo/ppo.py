@@ -60,6 +60,7 @@ class PPO(BaseAlgo):
     def _init_config(self):
         # Env related Config
         self.num_envs: int = self.env.config.num_envs
+        # import ipdb; ipdb.set_trace()
         self.algo_obs_dim_dict = self.env.config.robot.algo_obs_dim_dict
         self.num_act = self.env.config.robot.actions_dim
 

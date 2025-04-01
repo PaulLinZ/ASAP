@@ -85,7 +85,7 @@ class PPOCritic(nn.Module):
                 obs_dim_dict,
                 module_config_dict):
         super(PPOCritic, self).__init__()
-
+        # import ipdb; ipdb.set_trace()
         self.critic_module = BaseModule(obs_dim_dict, module_config_dict)
 
     @property

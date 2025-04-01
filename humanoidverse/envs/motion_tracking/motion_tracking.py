@@ -17,7 +17,7 @@ from humanoidverse.envs.env_utils.visualization import Point
 
 from humanoidverse.utils.motion_lib.skeleton import SkeletonTree
 
-from humanoidverse.utils.motion_lib.motion_lib_robot import MotionLibRobot
+from humanoidverse.utils.motion_lib.motion_lib_kuavo import MotionLibKuavo
 
 from termcolor import colored
 from loguru import logger
@@ -86,11 +86,11 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
 
     def _init_motion_lib(self):
         self.config.robot.motion.step_dt = self.dt
-        self._motion_lib = MotionLibRobot(self.config.robot.motion, num_envs=self.num_envs, device=self.device)
+        self._motion_lib = MotionLibKuavo(self.config.robot.motion, num_envs=self.num_envs, device=self.device)
         if self.is_evaluating:
-            self._motion_lib.load_motions(random_sample=False)
+            self._motion_lib.load_data()
         else:
-            self._motion_lib.load_motions(random_sample=True)
+            self._motion_lib.load_data()
             
         # res = self._motion_lib.get_motion_state(self.motion_ids, self.motion_times, offset=self.env_origins)
         res = self._resample_motion_times(torch.arange(self.num_envs))
@@ -123,17 +123,17 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
             self.extend_body_rot_in_parent_wxyz = torch.tensor(extend_rot).repeat(self.num_envs, 1, 1).to(self.device)
             self.extend_body_rot_in_parent_xyzw = self.extend_body_rot_in_parent_wxyz[:, :, [1, 2, 3, 0]]
             self.num_extend_bodies = len(extend_parent_ids)
+        self.num_extend_bodies = self.config.robot.motion.nums_extend_bodies
 
-            self.marker_coords = torch.zeros(self.num_envs, 
-                                         self.num_bodies + self.num_extend_bodies, 
-                                         3, 
-                                         dtype=torch.float, 
-                                         device=self.device, 
-                                         requires_grad=False) # extend
-            # import pdb; pdb.set_trace()
-            # self.num_bodies = self.simulator.num_bodies (27)
-            self.ref_body_pos_extend = torch.zeros(self.num_envs, self.num_bodies + self.num_extend_bodies, 3, dtype=torch.float, device=self.device, requires_grad=False)
-            self.dif_global_body_pos = torch.zeros(self.num_envs, self.num_bodies + self.num_extend_bodies, 3, dtype=torch.float, device=self.device, requires_grad=False)
+        self.marker_coords = torch.zeros(self.num_envs, 
+                                        self.num_bodies, 
+                                        3, 
+                                        dtype=torch.float, 
+                                        device=self.device, 
+                                        requires_grad=False) # extend
+            
+        self.ref_body_pos_extend = torch.zeros(self.num_envs, self.num_bodies , 3, dtype=torch.float, device=self.device, requires_grad=False)
+        self.dif_global_body_pos = torch.zeros(self.num_envs, self.num_bodies , 3, dtype=torch.float, device=self.device, requires_grad=False)
 
     def start_compute_metrics(self):
         self.compute_metrics = True
@@ -195,6 +195,7 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
                 self.log_dict["terminate_when_motion_far_threshold"] = torch.tensor(self.terminate_when_motion_far_threshold, dtype=torch.float)
 
     def _update_timeout_buf(self):
+        # import ipdb; ipdb.set_trace()
         super()._update_timeout_buf()
         if self.config.termination.terminate_when_motion_end:
             current_time = (self.episode_length_buf) * self.dt + self.motion_start_times
@@ -208,14 +209,14 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         self._motion_lib.load_motions(random_sample=False, start_idx=self.motion_start_idx)
         self.reset_all()
 
+    # 采样motion开始时间
     def _resample_motion_times(self, env_ids):
         if len(env_ids) == 0:
             return
-        self.motion_len[env_ids] = self._motion_lib.get_motion_length(self.motion_ids[env_ids])
-        if self.is_evaluating and not self.config.enforce_randomize_motion_start_eval:
-            self.motion_start_times[env_ids] = torch.zeros(len(env_ids), dtype=torch.float32, device=self.device)
         else:
-            self.motion_start_times[env_ids] = self._motion_lib.sample_time(self.motion_ids[env_ids])
+            self.motion_start_times[env_ids] = torch.zeros(len(env_ids), dtype=torch.float32, device=self.device)
+        self.motion_len[env_ids] = self._motion_lib.get_motion_length(self.motion_ids[env_ids])
+
         # self.motion_start_times[env_ids] = self._motion_lib.sample_time(self.motion_ids[env_ids])
         # offset = self.env_origins
         # motion_times = (self.episode_length_buf ) * self.dt + self.motion_start_times # next frames so +1
@@ -223,7 +224,7 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         # motion_res = self._get_state_from_motionlib_cache_trimesh(self.motion_ids, motion_times, offset= offset)
 
     def resample_motion(self):
-        self._motion_lib.load_motions(random_sample=True)
+        # self._motion_lib.load_motions(random_sample=True)
         self.reset_envs_idx(torch.arange(self.num_envs, device=self.device))
 
 
@@ -234,64 +235,70 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         B = self.motion_ids.shape[0]
         motion_times = (self.episode_length_buf + 1) * self.dt + self.motion_start_times # next frames so +1
         # motion_res = self._get_state_from_motionlib_cache_trimesh(self.motion_ids, motion_times, offset= offset)
-        motion_res = self._motion_lib.get_motion_state(self.motion_ids, motion_times, offset=offset)
-        import pdb; pdb.set_trace()
-        ref_body_pos_extend = motion_res["rg_pos_t"]
+        import ipdb; ipdb.set_trace()
+        motion_res = self._motion_lib.get_motion_state(self.motion_ids, motion_times)    # motion_ids是[0...4095], motion_times是一些时间
+
+        ref_body_pos_extend = motion_res["rg_pos_t"]    # body_rigid_pos
         self.ref_body_pos_extend[:] = ref_body_pos_extend # for visualization and analysis
-        ref_body_vel_extend = motion_res["body_vel_t"] # [num_envs, num_markers, 3]
-        self.ref_body_rot_extend = ref_body_rot_extend = motion_res["rg_rot_t"] # [num_envs, num_markers, 4]
-        ref_body_ang_vel_extend = motion_res["body_ang_vel_t"] # [num_envs, num_markers, 3]
-        ref_joint_pos = motion_res["dof_pos"] # [num_envs, num_dofs]
+        ref_body_vel_extend = motion_res["body_vel_t"] # [num_envs, num_markers, 3] body_rigid_vel
+        self.ref_body_rot_extend = ref_body_rot_extend = motion_res["rg_rot_t"] # [num_envs, num_markers, 4]    body_rigid_rot
+        ref_body_ang_vel_extend = motion_res["body_ang_vel_t"] # [num_envs, num_markers, 3]                     body_rigid_ang_vel
+        ref_joint_pos = motion_res["dof_pos"] # [num_envs, num_dofs]    这个应该是一维的，不是三维的
         ref_joint_vel = motion_res["dof_vel"] # [num_envs, num_dofs]
 
 
-        ################### EXTEND Rigid body POS #####################
-        rotated_pos_in_parent = my_quat_rotate(
-            self.simulator._rigid_body_rot[:, self.extend_body_parent_ids].reshape(-1, 4),
-            self.extend_body_pos_in_parent.reshape(-1, 3)
-        )
-        extend_curr_pos = my_quat_rotate(
-            self.extend_body_rot_in_parent_xyzw.reshape(-1, 4),
-            rotated_pos_in_parent
-        ).view(self.num_envs, -1, 3) + self.simulator._rigid_body_pos[:, self.extend_body_parent_ids]
-        self._rigid_body_pos_extend = torch.cat([self.simulator._rigid_body_pos, extend_curr_pos], dim=1)
-
+        ################### EXTEND Rigid body POS ##################### entend是啥, 好像就是两个hand和一个head
+        # rotated_pos_in_parent = my_quat_rotate(
+        #     self.simulator._rigid_body_rot[:, self.extend_body_parent_ids].reshape(-1, 4),
+        #     self.extend_body_pos_in_parent.reshape(-1, 3)
+        # )
+        # extend_curr_pos = my_quat_rotate(
+        #     self.extend_body_rot_in_parent_xyzw.reshape(-1, 4),
+        #     rotated_pos_in_parent
+        # ).view(self.num_envs, -1, 3) + self.simulator._rigid_body_pos[:, self.extend_body_parent_ids]
+        
+        # 每次更新rigid_body_pose_extend
+        self._rigid_body_pos_extend = torch.cat([self.simulator._rigid_body_pos], dim=1)
+        # self._rigid_body_pos_extend = torch.cat([self.simulator._rigid_body_pos, extend_curr_pos], dim=1)
+        
         ################### EXTEND Rigid body Rotation #####################
-        extend_curr_rot = quat_mul(self.simulator._rigid_body_rot[:, self.extend_body_parent_ids].reshape(-1, 4),
-                                    self.extend_body_rot_in_parent_xyzw.reshape(-1, 4),
-                                    w_last=True).view(self.num_envs, -1, 4)
-        self._rigid_body_rot_extend = torch.cat([self.simulator._rigid_body_rot, extend_curr_rot], dim=1)
+        # extend_curr_rot = quat_mul(self.simulator._rigid_body_rot[:, self.extend_body_parent_ids].reshape(-1, 4),
+        #                             self.extend_body_rot_in_parent_xyzw.reshape(-1, 4),
+        #                             w_last=True).view(self.num_envs, -1, 4)
+        self._rigid_body_rot_extend = torch.cat([self.simulator._rigid_body_rot], dim=1)
+        # self._rigid_body_rot_extend = torch.cat([self.simulator._rigid_body_rot, extend_curr_rot], dim=1)
         
         ################### EXTEND Rigid Body Angular Velocity #####################
-        self._rigid_body_ang_vel_extend = torch.cat([self.simulator._rigid_body_ang_vel, self.simulator._rigid_body_ang_vel[:, self.extend_body_parent_ids]], dim=1)
+        self._rigid_body_ang_vel_extend = torch.cat([self.simulator._rigid_body_ang_vel], dim=1)
     
         ################### EXTEND Rigid Body Linear Velocity #####################
-        self._rigid_body_ang_vel_global = self.simulator._rigid_body_ang_vel[:, self.extend_body_parent_ids]
-        angular_velocity_contribution = torch.cross(self._rigid_body_ang_vel_global, self.extend_body_pos_in_parent.view(self.num_envs, -1, 3), dim=2)
-        extend_curr_vel = self.simulator._rigid_body_vel[:, self.extend_body_parent_ids] + angular_velocity_contribution.view(self.num_envs, -1, 3)
-        self._rigid_body_vel_extend = torch.cat([self.simulator._rigid_body_vel, extend_curr_vel], dim=1)
+        # self._rigid_body_ang_vel_global = self.simulator._rigid_body_ang_vel[:, self.extend_body_parent_ids]
+        # angular_velocity_contribution = torch.cross(self._rigid_body_ang_vel_global, self.extend_body_pos_in_parent.view(self.num_envs, -1, 3), dim=2)
+        # extend_curr_vel = self.simulator._rigid_body_vel[:, self.extend_body_parent_ids] + angular_velocity_contribution.view(self.num_envs, -1, 3)
+        self._rigid_body_vel_extend = torch.cat([self.simulator._rigid_body_vel], dim=1)
 
         ################### Compute differences #####################
 
         ## diff compute - kinematic position
-        self.dif_global_body_pos = ref_body_pos_extend - self._rigid_body_pos_extend
+        # [num_envs, 27, 3], 27可能是markers的数量
+        self.dif_global_body_pos = ref_body_pos_extend - self._rigid_body_pos_extend    # 全局body_pos， 是所有的body，不是只有baselink
         # import ipdb; ipdb.set_trace()
         ## diff compute - kinematic rotation
-        self.dif_global_body_rot = ref_body_rot_extend - self._rigid_body_rot_extend
+        self.dif_global_body_rot = ref_body_rot_extend - self._rigid_body_rot_extend    # body_rot
         ## diff compute - kinematic velocity
-        self.dif_global_body_vel = ref_body_vel_extend - self._rigid_body_vel_extend
+        self.dif_global_body_vel = ref_body_vel_extend - self._rigid_body_vel_extend    # body_vel_lin
         ## diff compute - kinematic angular velocity
         
-        self.dif_global_body_ang_vel = ref_body_ang_vel_extend - self._rigid_body_ang_vel_extend
+        self.dif_global_body_ang_vel = ref_body_ang_vel_extend - self._rigid_body_ang_vel_extend    # body_vel_ang
         # ang_vel_reward = self._reward_teleop_body_ang_velocity_extend()
 
 
 
         
         ## diff compute - kinematic joint position
-        self.dif_joint_angles = ref_joint_pos - self.simulator.dof_pos
+        self.dif_joint_angles = ref_joint_pos - self.simulator.dof_pos  # dof_pos
         ## diff compute - kinematic joint velocity
-        self.dif_joint_velocities = ref_joint_vel - self.simulator.dof_vel
+        self.dif_joint_velocities = ref_joint_vel - self.simulator.dof_vel  # dof_vel
 
         
 
@@ -320,7 +327,8 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         self._obs_local_ref_rigid_body_pos = local_ref_rigid_body_pos_flat.view(env_batch_size, -1) # (num_envs, num_rigid_bodies*3)
 
         global_ref_body_vel = ref_body_vel_extend.view(env_batch_size, -1, 3)
-        local_ref_rigid_body_vel_flat = my_quat_rotate(heading_inv_rot_expand.view(-1, 4), global_ref_body_vel.view(-1, 3))
+        # import ipdb; ipdb.set_trace()
+        local_ref_rigid_body_vel_flat = my_quat_rotate(heading_inv_rot_expand.view(-1, 4), global_ref_body_vel.reshape(-1, 3))
 
         self._obs_local_ref_rigid_body_vel = local_ref_rigid_body_vel_flat.view(env_batch_size, -1) # (num_envs, num_rigid_bodies*3)
 
@@ -419,7 +427,7 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         else:
             motion_times = (self.episode_length_buf) * self.dt + self.motion_start_times # next frames so +1
             offset = self.env_origins
-            motion_res = self._motion_lib.get_motion_state(self.motion_ids, motion_times, offset=offset)
+            motion_res = self._motion_lib.get_motion_state(self.motion_ids, motion_times)
 
 
             root_pos_noise = self.config.init_noise_scale.root_pos * self.config.noise_to_initial_level
@@ -470,12 +478,13 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
 
         motion_times = (self.episode_length_buf) * self.dt + self.motion_start_times # next frames so +1
         offset = self.env_origins
-        motion_res = self._motion_lib.get_motion_state(self.motion_ids, motion_times, offset=offset)
+        motion_res = self._motion_lib.get_motion_state(self.motion_ids, motion_times)
 
         dof_pos_noise = self.config.init_noise_scale.dof_pos * self.config.noise_to_initial_level
         dof_vel_noise = self.config.init_noise_scale.dof_vel * self.config.noise_to_initial_level
-        dof_pos = motion_res['dof_pos'][env_ids]
-        dof_vel = motion_res['dof_vel'][env_ids]
+        dof_pos = motion_res['dof_pos'][env_ids].to(torch.float32)
+        dof_vel = motion_res['dof_vel'][env_ids].to(torch.float32)
+        # import ipdb; ipdb.set_trace()
         self.simulator.dof_pos[env_ids] = dof_pos + torch.randn_like(dof_pos) * dof_pos_noise
         self.simulator.dof_vel[env_ids] = dof_vel + torch.randn_like(dof_vel) * dof_vel_noise
 
@@ -580,9 +589,12 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         return torch.cat(history_tensors, dim=1)
     ###############################################################
 
+    # 位置
     def _reward_teleop_body_position_extend(self):
-        upper_body_diff = self.dif_global_body_pos[:, self.upper_body_id, :]
-        lower_body_diff = self.dif_global_body_pos[:, self.lower_body_id, :]
+        # import ipdb; ipdb.set_trace()
+        # body mean一下, env mean一下
+        upper_body_diff = self.dif_global_body_pos[:, self.upper_body_id, :]    # upper_id: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+        lower_body_diff = self.dif_global_body_pos[:, self.lower_body_id, :]    # lower_id: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 
         diff_body_pos_dist_upper = (upper_body_diff**2).mean(dim=-1).mean(dim=-1)
         diff_body_pos_dist_lower = (lower_body_diff**2).mean(dim=-1).mean(dim=-1)
@@ -593,12 +605,14 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
     
         return r_body_pos
     
+    # 这三个位置会给单独的跟踪权重？
     def _reward_teleop_vr_3point(self):
-        vr_3point_diff = self.dif_global_body_pos[:, self.motion_tracking_id, :]
+        vr_3point_diff = self.dif_global_body_pos[:, self.motion_tracking_id, :]    # self.motion_tracking_id:[24,25,26]
         vr_3point_dist = (vr_3point_diff**2).mean(dim=-1).mean(dim=-1)
         r_vr_3point = torch.exp(-vr_3point_dist / self.config.rewards.reward_tracking_sigma.teleop_vr_3point_pos)
         return r_vr_3point
 
+    # feet pos
     def _reward_teleop_body_position_feet(self):
 
         feet_diff = self.dif_global_body_pos[:, self.feet_indices, :]
@@ -606,12 +620,14 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         r_feet = torch.exp(-feet_dist / self.config.rewards.reward_tracking_sigma.teleop_feet_pos)
         return r_feet
     
+    # body rot
     def _reward_teleop_body_rotation_extend(self):
         rotation_diff = self.dif_global_body_rot
         diff_body_rot_dist = (rotation_diff**2).mean(dim=-1).mean(dim=-1)
         r_body_rot = torch.exp(-diff_body_rot_dist / self.config.rewards.reward_tracking_sigma.teleop_body_rot)
         return r_body_rot
 
+    # body vel lin
     def _reward_teleop_body_velocity_extend(self):
         velocity_diff = self.dif_global_body_vel    
         diff_body_vel_dist = (velocity_diff**2).mean(dim=-1).mean(dim=-1)
@@ -624,12 +640,14 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         r_body_ang_vel = torch.exp(-diff_body_ang_vel_dist / self.config.rewards.reward_tracking_sigma.teleop_body_ang_vel)
         return r_body_ang_vel
 
+    # 在这里加入关节位置的reward
     def _reward_teleop_joint_position(self):
-        joint_pos_diff = self.dif_joint_angles
+        joint_pos_diff = self.dif_joint_angles  # dof 都是23, body都是27
         diff_joint_pos_dist = (joint_pos_diff**2).mean(dim=-1)
         r_joint_pos = torch.exp(-diff_joint_pos_dist / self.config.rewards.reward_tracking_sigma.teleop_joint_pos)
         return r_joint_pos
     
+    # 在这里加入关节速度的reward
     def _reward_teleop_joint_velocity(self):
         joint_vel_diff = self.dif_joint_velocities
         diff_joint_vel_dist = (joint_vel_diff**2).mean(dim=-1)
