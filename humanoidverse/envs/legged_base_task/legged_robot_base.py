@@ -130,7 +130,7 @@ class LeggedRobotBase(BaseTask):
             Looks for self._reward_<REWARD_NAME>, where <REWARD_NAME> are names of all non zero reward scales in the cfg.
         """
         logger.info(colored(f"{self.config.rewards.set_reward} set reward on {self.config.rewards.set_reward_date}", "green"))
-        
+        # import ipdb; ipdb.set_trace()
         self.reward_scales = self.config.rewards.reward_scales
         # remove zero scales + multiply non-zero ones by dt
         for key in list(self.reward_scales.keys()):

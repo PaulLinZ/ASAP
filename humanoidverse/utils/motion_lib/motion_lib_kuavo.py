@@ -8,7 +8,7 @@ class MotionLibKuavo:
     def __init__(self, m_cfg, num_envs, device):
         self.m_cfg = m_cfg
         self.num_envs = num_envs
-        self.device = device
+        self._device = device
         self._num_unique_motions = 1
         
     
@@ -22,20 +22,20 @@ class MotionLibKuavo:
         data = np.load(self.m_cfg.motion_file, allow_pickle=True)[0]
         
         # data shape: (num_frame, origin_shape)
-        self.root_trans = torch.from_numpy(data["root_trans"]).to(self.device)       # (num_frame, 3)
-        self.root_quat = torch.from_numpy(data["root_quat"]).to(self.device)           # (num_frame, 4)
-        self.root_lin_vel = torch.from_numpy(data["root_lin_vel"]).to(self.device)     # (num_frame, 3)
-        self.root_ang_vel = torch.from_numpy(data["root_ang_vel"]).to(self.device)     # (num_frame, 3)
-        self.dof_pos = torch.from_numpy(data["joint_pos"]).to(self.device)             # (num_frame, 28)
-        self.dof_vel = torch.from_numpy(data["joint_vel"]).to(self.device)           # (num_frame, 28)
-        self.body_rigid_pos = torch.from_numpy(data["body_pos"]).to(self.device)             # (num_frame, 29, 3)
-        self.body_rigid_quat = torch.from_numpy(data["body_quat"]).to(self.device)           # (num_frame, 29, 4)
-        self.frame_rate = torch.tensor(data["frame_rate"]).to(self.device)         # 1
-        self.frame_len = torch.tensor(data["frames"]).to(self.device)              # 1  
-        self.body_rigid_vel = torch.from_numpy(data["body_lin_vel"]).to(self.device) 
-        self.body_rigid_ang_vel = torch.from_numpy(data["body_ang_vel"]).to(self.device) 
-        self._motion_dt = torch.tensor(1. / self.frame_rate).to(self.device) 
-        self.motion_duration = torch.tensor(self._motion_dt * self.frame_len).to(self.device) 
+        self.root_trans = torch.from_numpy(data["root_trans"]).to(self._device)       # (num_frame, 3)
+        self.root_quat = torch.from_numpy(data["root_quat"]).to(self._device)           # (num_frame, 4)
+        self.root_lin_vel = torch.from_numpy(data["root_lin_vel"]).to(self._device)     # (num_frame, 3)
+        self.root_ang_vel = torch.from_numpy(data["root_ang_vel"]).to(self._device)     # (num_frame, 3)
+        self.dof_pos = torch.from_numpy(data["joint_pos"]).to(self._device)             # (num_frame, 28)
+        self.dof_vel = torch.from_numpy(data["joint_vel"]).to(self._device)           # (num_frame, 28)
+        self.body_rigid_pos = torch.from_numpy(data["body_pos"]).to(self._device)             # (num_frame, 29, 3)
+        self.body_rigid_quat = torch.from_numpy(data["body_quat"]).to(self._device)           # (num_frame, 29, 4)
+        self.frame_rate = torch.tensor(data["frame_rate"]).to(self._device)         # 1
+        self.frame_len = torch.tensor(data["frames"]).to(self._device)              # 1  
+        self.body_rigid_vel = torch.from_numpy(data["body_lin_vel"]).to(self._device) 
+        self.body_rigid_ang_vel = torch.from_numpy(data["body_ang_vel"]).to(self._device) 
+        self._motion_dt = torch.tensor(1. / self.frame_rate).to(self._device) 
+        self.motion_duration = torch.tensor(self._motion_dt * self.frame_len).to(self._device) 
         self.num_rigid_body = self.body_rigid_pos.shape[1]
         self.num_dof = self.dof_pos.shape[1]
         
@@ -75,7 +75,7 @@ class MotionLibKuavo:
         for i in range (self.num_rigid_body):
             # import ipdb; ipdb.set_trace()
             rg_rot_t_temp.append(list(slerp(self.body_rigid_quat[frame_idx0][i], self.body_rigid_quat[frame_idx1][i], blend)))
-        motion_state["rg_rot_t"] = torch.tensor(rg_rot_t_temp).to(self.device).to(torch.float32)
+        motion_state["rg_rot_t"] = torch.tensor(rg_rot_t_temp).to(self._device).to(torch.float32)
 
         for key in motion_state.keys():
             # 获取原始形状
@@ -89,6 +89,7 @@ class MotionLibKuavo:
         # import ipdb; ipdb.set_trace()
         if offset is not None:
             motion_state["root_pos"] = motion_state["root_pos"] + offset
+            motion_state["rg_pos_t"] = motion_state["rg_pos_t"] + offset[..., None, :]
         
         return motion_state
 
@@ -111,6 +112,16 @@ class MotionLibKuavo:
     
     def get_motion_length(self, motion_ids):
         return self.motion_duration.expand((len(motion_ids)))
+    
+    def sample_time(self, motion_ids, truncate_time=None):
+        phase = torch.rand(motion_ids.shape, device=self._device)
+        motion_len = self.motion_duration
+        if (truncate_time is not None):
+            assert (truncate_time >= 0.0)
+            motion_len -= truncate_time
+
+        motion_time = phase * motion_len
+        return motion_time.to(self._device)
 
 """"
 1. 文件读取

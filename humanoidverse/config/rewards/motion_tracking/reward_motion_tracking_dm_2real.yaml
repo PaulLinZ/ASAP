@@ -8,7 +8,7 @@ rewards:
   set_reward_date: 20241025
   only_positive_rewards: False
   reward_scales:
-      teleop_body_position_extend: 1.0
+      teleop_body_position_extend: 2.0
       teleop_vr_3point: 1.6
       teleop_body_position_feet: 2.1
       teleop_body_rotation_extend: 0.5

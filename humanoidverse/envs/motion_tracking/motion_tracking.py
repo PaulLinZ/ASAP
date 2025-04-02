@@ -55,9 +55,6 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         else:
             self.terminate_when_motion_far_threshold = self.config.termination_scales.termination_motion_far_threshold
             logger.info(f"Terminate when motion far threshold: {self.terminate_when_motion_far_threshold}")
-
-
-
         
 
     def teleop_callback(self, msg):
@@ -186,6 +183,7 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         super().set_is_evaluating()
 
     def _check_termination(self):
+        # import ipdb; ipdb.set_trace()
         super()._check_termination()
         if self.config.termination.terminate_when_motion_far:
             reset_buf_motion_far = torch.any(torch.norm(self.dif_global_body_pos, dim=-1) > self.terminate_when_motion_far_threshold, dim=-1)
@@ -213,9 +211,11 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
     def _resample_motion_times(self, env_ids):
         if len(env_ids) == 0:
             return
-        else:
-            self.motion_start_times[env_ids] = torch.zeros(len(env_ids), dtype=torch.float32, device=self.device)
         self.motion_len[env_ids] = self._motion_lib.get_motion_length(self.motion_ids[env_ids])
+        if self.is_evaluating and not self.config.enforce_randomize_motion_start_eval:
+            self.motion_start_times[env_ids] = torch.zeros(len(env_ids), dtype=torch.float32, device=self.device)
+        else:
+            self.motion_start_times[env_ids] = self._motion_lib.sample_time(self.motion_ids[env_ids])
 
         # self.motion_start_times[env_ids] = self._motion_lib.sample_time(self.motion_ids[env_ids])
         # offset = self.env_origins
@@ -237,7 +237,7 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         # motion_res = self._get_state_from_motionlib_cache_trimesh(self.motion_ids, motion_times, offset= offset)
         # import ipdb; ipdb.set_trace()
         motion_res = self._motion_lib.get_motion_state(self.motion_ids, motion_times, offset= offset)    # motion_ids是[0...4095], motion_times是一些时间
-
+        # import ipdb; ipdb.set_trace()
         ref_body_pos_extend = motion_res["rg_pos_t"]    # body_rigid_pos
         self.ref_body_pos_extend[:] = ref_body_pos_extend # for visualization and analysis
         ref_body_vel_extend = motion_res["body_vel_t"] # [num_envs, num_markers, 3] body_rigid_vel
@@ -281,6 +281,7 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
 
         ## diff compute - kinematic position
         # [num_envs, 27, 3], 27可能是markers的数量
+        # import ipdb; ipdb.set_trace()
         self.dif_global_body_pos = ref_body_pos_extend - self._rigid_body_pos_extend    # 全局body_pos， 是所有的body，不是只有baselink
         # import ipdb; ipdb.set_trace()
         ## diff compute - kinematic rotation
@@ -382,13 +383,14 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         for env_id in range(self.num_envs):
             if not self.config.use_teleop_control:
                 # draw marker joints
+                # import ipdb; ipdb.set_trace()
                 for pos_id, pos_joint in enumerate(self.marker_coords[env_id]): # idx 0 torso (duplicate with 11)
                     if self.config.robot.motion.visualization.customize_color:
                         color_inner = self.config.robot.motion.visualization.marker_joint_colors[pos_id % len(self.config.robot.motion.visualization.marker_joint_colors)]
                     else:
                         color_inner = (0.3, 0.3, 0.3)
                     color_inner = tuple(color_inner)
-
+                    
                     # import ipdb; ipdb.set_trace()
                     self.simulator.draw_sphere(pos_joint, 0.04, color_inner, env_id, pos_id)
 
@@ -602,7 +604,9 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         r_body_pos_upper = torch.exp(-diff_body_pos_dist_upper / self.config.rewards.reward_tracking_sigma.teleop_upper_body_pos)
         r_body_pos_lower = torch.exp(-diff_body_pos_dist_lower / self.config.rewards.reward_tracking_sigma.teleop_lower_body_pos)
         r_body_pos = r_body_pos_lower * self.config.rewards.teleop_body_pos_lowerbody_weight + r_body_pos_upper * self.config.rewards.teleop_body_pos_upperbody_weight
-    
+
+        # import ipdb; ipdb.set_trace()
+
         return r_body_pos
     
     # 这三个位置会给单独的跟踪权重？

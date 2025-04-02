@@ -24,6 +24,7 @@
     <origin xyz="0 0 0" rpy="0 0 0" />
     <parent link="dummy_link" />
     <child link="base_link" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="leg_l1_link">
     <inertial>
@@ -47,6 +48,7 @@
     <child link="leg_l1_link" />
     <axis xyz="1 0 0" />
     <limit lower="-0.314159265358979" upper="0.663225115757845" effort="180.0" velocity="23.55" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="leg_l2_link">
     <inertial>
@@ -70,6 +72,7 @@
     <child link="leg_l2_link" />
     <axis xyz="0 0 1" />
     <limit lower="-0.872664625997165" upper="0.785398163397448" effort="100.0" velocity="41.3433333333333" />
+    <dynamics damping="0.5" friction="0.1"/>
   </joint>
   <link name="leg_l3_link">
     <inertial>
@@ -93,6 +96,7 @@
     <child link="leg_l3_link" />
     <axis xyz="0 1 0" />
     <limit lower="-2.00712863979348" upper="1.5707963267949" effort="100.0" velocity="41.3433333333333" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="leg_l4_link">
     <inertial>
@@ -116,12 +120,13 @@
     <child link="leg_l4_link" />
     <axis xyz="0 1 0" />
     <limit lower="0.0" upper="2.53072741539178" effort="180.0" velocity="23.55" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="leg_l5_link">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
       <mass value="0.07193524" />
-      <inertia ixx="6.92e-06" ixy="0.0" ixz="0.0" iyy="6.92e-06" iyz="0.0" izz="1.218e-05" />
+      <inertia ixx="6.92e-04" ixy="0.0" ixz="0.0" iyy="6.92e-04" iyz="0.0" izz="1.218e-04" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -139,6 +144,7 @@
     <child link="leg_l5_link" />
     <axis xyz="0 1 0" />
     <limit lower="-0.872664625997165" upper="0.349065850398866" effort="36.0" velocity="23.0266666666667" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="leg_l6_link">
     <inertial>
@@ -162,6 +168,7 @@
     <child link="leg_l6_link" />
     <axis xyz="1 0 0" />
     <limit lower="-0.261799387799149" upper="0.261799387799149" effort="36.0" velocity="23.0266666666667" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="ll_foot_toe">
     <collision>
@@ -175,6 +182,7 @@
     <origin xyz="0.17084 0.04773 -0.0595" rpy="0 0 0" />
     <parent link="leg_l6_link" />
     <child link="ll_foot_toe" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="ll_foot_heel">
     <collision>
@@ -188,6 +196,7 @@
     <origin xyz="-0.073164 0.04773 -0.0595" rpy="0 0 0" />
     <parent link="leg_l6_link" />
     <child link="ll_foot_heel" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="lr_foot_toe">
     <collision>
@@ -201,6 +210,7 @@
     <origin xyz="0.17084 -0.04773 -0.0595" rpy="0 0 0" />
     <parent link="leg_l6_link" />
     <child link="lr_foot_toe" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="lr_foot_heel">
     <collision>
@@ -214,6 +224,7 @@
     <origin xyz="-0.073164 -0.04773 -0.0595" rpy="0 0 0" />
     <parent link="leg_l6_link" />
     <child link="lr_foot_heel" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="l_foot_toe">
     <collision>
@@ -227,6 +238,7 @@
     <origin xyz="0.17084 0.0 -0.0595" rpy="0 0 0" />
     <parent link="leg_l6_link" />
     <child link="l_foot_toe" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="l_foot_heel">
     <collision>
@@ -240,6 +252,7 @@
     <origin xyz="-0.073164 0.0 -0.0595" rpy="0 0 0" />
     <parent link="leg_l6_link" />
     <child link="l_foot_heel" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="leg_r1_link">
     <inertial>
@@ -263,6 +276,7 @@
     <child link="leg_r1_link" />
     <axis xyz="1 0 0" />
     <limit lower="-0.663225115757845" upper="0.314159265358979" effort="180.0" velocity="23.55" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="leg_r2_link">
     <inertial>
@@ -286,6 +300,7 @@
     <child link="leg_r2_link" />
     <axis xyz="0 0 1" />
     <limit lower="-0.785398163397448" upper="0.872664625997165" effort="100.0" velocity="41.3433333333333" />
+    <dynamics damping="0.5" friction="0.1"/>
   </joint>
   <link name="leg_r3_link">
     <inertial>
@@ -309,6 +324,7 @@
     <child link="leg_r3_link" />
     <axis xyz="0 1 0" />
     <limit lower="-2.00712863979348" upper="1.5707963267949" effort="100.0" velocity="41.3433333333333" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="leg_r4_link">
     <inertial>
@@ -332,12 +348,13 @@
     <child link="leg_r4_link" />
     <axis xyz="0 1 0" />
     <limit lower="0.0" upper="2.53072741539178" effort="180.0" velocity="23.55" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="leg_r5_link">
     <inertial>
       <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
       <mass value="0.07193524" />
-      <inertia ixx="6.92e-06" ixy="0.0" ixz="0.0" iyy="6.92e-06" iyz="0.0" izz="1.218e-05" />
+      <inertia ixx="6.92e-04" ixy="0.0" ixz="0.0" iyy="6.92e-04" iyz="0.0" izz="1.218e-04" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -355,6 +372,7 @@
     <child link="leg_r5_link" />
     <axis xyz="0 1 0" />
     <limit lower="-0.872664625997165" upper="0.349065850398866" effort="36.0" velocity="23.0266666666667" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="leg_r6_link">
     <inertial>
@@ -378,6 +396,7 @@
     <child link="leg_r6_link" />
     <axis xyz="1 0 0" />
     <limit lower="-0.261799387799149" upper="0.261799387799149" effort="36.0" velocity="23.0266666666667" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="rl_foot_toe">
     <collision>
@@ -391,6 +410,7 @@
     <origin xyz="0.17084 0.04773 -0.0595" rpy="0 0 0" />
     <parent link="leg_r6_link" />
     <child link="rl_foot_toe" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="rl_foot_heel">
     <collision>
@@ -404,6 +424,7 @@
     <origin xyz="-0.073164 0.04773 -0.0595" rpy="0 0 0" />
     <parent link="leg_r6_link" />
     <child link="rl_foot_heel" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="rr_foot_toe">
     <collision>
@@ -417,6 +438,7 @@
     <origin xyz="0.17084 -0.04773 -0.0595" rpy="0 0 0" />
     <parent link="leg_r6_link" />
     <child link="rr_foot_toe" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="rr_foot_heel">
     <collision>
@@ -430,6 +452,7 @@
     <origin xyz="-0.073164 -0.04773 -0.0595" rpy="0 0 0" />
     <parent link="leg_r6_link" />
     <child link="rr_foot_heel" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="r_foot_toe">
     <collision>
@@ -443,6 +466,7 @@
     <origin xyz="0.17084 0.0 -0.0595" rpy="0 0 0" />
     <parent link="leg_r6_link" />
     <child link="r_foot_toe" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="r_foot_heel">
     <collision>
@@ -456,6 +480,7 @@
     <origin xyz="-0.073164 0.0 -0.0595" rpy="0 0 0" />
     <parent link="leg_r6_link" />
     <child link="r_foot_heel" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zarm_l1_link">
     <inertial>
@@ -479,6 +504,7 @@
     <child link="zarm_l1_link" />
     <axis xyz="0 1 0" />
     <limit lower="-3.14159265358979" upper="1.5707963267949" effort="100.0" velocity="41.3433333333333" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zarm_l2_link">
     <inertial>
@@ -502,6 +528,7 @@
     <child link="zarm_l2_link" />
     <axis xyz="1 0 0" />
     <limit lower="-0.349065850398866" upper="2.0943951023932" effort="50.0" velocity="19.154" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zarm_l3_link">
     <inertial>
@@ -525,6 +552,7 @@
     <child link="zarm_l3_link" />
     <axis xyz="0 0 1" />
     <limit lower="-1.5707963267949" upper="1.5707963267949" effort="39.0" velocity="18.84" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zarm_l4_link">
     <inertial>
@@ -548,6 +576,7 @@
     <child link="zarm_l4_link" />
     <axis xyz="0 1 0" />
     <limit lower="-2.61799387799149" upper="0.0" effort="50.0" velocity="18.84" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zarm_l5_link">
     <inertial>
@@ -571,6 +600,7 @@
     <child link="zarm_l5_link" />
     <axis xyz="0 0 1" />
     <limit lower="-1.5707963267949" upper="1.5707963267949" effort="12.0" velocity="21.666" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zarm_l6_link">
     <inertial>
@@ -594,6 +624,7 @@
     <child link="zarm_l6_link" />
     <axis xyz="1 0 0" />
     <limit lower="-1.30899693899575" upper="0.698131700797732" effort="12.0" velocity="21.666" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zarm_l7_link">
     <inertial>
@@ -617,6 +648,7 @@
     <child link="zarm_l7_link" />
     <axis xyz="0 1 0" />
     <limit lower="-0.698131700797732" upper="0.698131700797732" effort="12.0" velocity="21.666" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zarm_l7_end_effector">
     <collision>
@@ -630,6 +662,7 @@
     <origin xyz="0 -0.03 -0.17" rpy="0 0 0" />
     <parent link="zarm_l7_link" />
     <child link="zarm_l7_end_effector" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zarm_r1_link">
     <inertial>
@@ -653,6 +686,7 @@
     <child link="zarm_r1_link" />
     <axis xyz="0 1 0" />
     <limit lower="-3.14159265358979" upper="1.5707963267949" effort="100.0" velocity="41.3433333333333" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zarm_r2_link">
     <inertial>
@@ -676,6 +710,7 @@
     <child link="zarm_r2_link" />
     <axis xyz="1 0 0" />
     <limit lower="-2.0943951023932" upper="0.349065850398866" effort="50.0" velocity="19.154" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zarm_r3_link">
     <inertial>
@@ -699,6 +734,7 @@
     <child link="zarm_r3_link" />
     <axis xyz="0 0 1" />
     <limit lower="-1.5707963267949" upper="1.5707963267949" effort="39.0" velocity="18.84" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zarm_r4_link">
     <inertial>
@@ -722,6 +758,7 @@
     <child link="zarm_r4_link" />
     <axis xyz="0 1 0" />
     <limit lower="-2.61799387799149" upper="0.0" effort="50.0" velocity="18.84" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zarm_r5_link">
     <inertial>
@@ -745,6 +782,7 @@
     <child link="zarm_r5_link" />
     <axis xyz="0 0 1" />
     <limit lower="-1.5707963267949" upper="1.5707963267949" effort="12.0" velocity="21.666" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zarm_r6_link">
     <inertial>
@@ -768,6 +806,7 @@
     <child link="zarm_r6_link" />
     <axis xyz="1 0 0" />
     <limit lower="-0.698131700797732" upper="1.30899693899575" effort="12.0" velocity="21.666" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zarm_r7_link">
     <inertial>
@@ -791,6 +830,7 @@
     <child link="zarm_r7_link" />
     <axis xyz="0 1 0" />
     <limit lower="-0.698131700797732" upper="0.698131700797732" effort="12.0" velocity="21.666" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zarm_r7_end_effector">
     <collision>
@@ -804,6 +844,7 @@
     <origin xyz="0 0.03 -0.17" rpy="0 0 0" />
     <parent link="zarm_r7_link" />
     <child link="zarm_r7_end_effector" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zhead_1_link">
     <inertial>
@@ -827,6 +868,7 @@
     <child link="zhead_1_link" />
     <axis xyz="0 0 1" />
     <limit lower="-1.5707963267949" upper="1.5707963267949" effort="1.5" velocity="5.23333333333333" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="zhead_2_link">
     <inertial>
@@ -850,6 +892,7 @@
     <child link="zhead_2_link" />
     <axis xyz="0 1 0" />
     <limit lower="-0.523598775598299" upper="0.523598775598299" effort="12.0" velocity="5.23333333333333" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
   <link name="camera">
     <inertial>
@@ -871,6 +914,7 @@
     <origin xyz="0.0967509784707853 0.0175003248712456 0.125953265112721" rpy="0 0.488692190558413 0" />
     <parent link="zhead_2_link" />
     <child link="camera" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
 
   <link
@@ -945,5 +989,216 @@
     <origin xyz="0.0217799337881943 0 0.105417258037133" rpy="0 0.229686043245049 0" />
     <parent link="zhead_2_link" />
     <child link="radar" />
+    <dynamics damping="0.2" friction="0.1"/>
   </joint>
+
+  
+  <!-- 在原有的gazebo插件配置后添加 -->
+  <!-- 真值 -->
+  <gazebo>
+    <plugin filename="libgazebo_ros_p3d.so" name="p3d_base_controller">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>500.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <topicName>ground_truth/state</topicName>
+      <gaussianNoise>0</gaussianNoise>
+      <frameName>world</frameName>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+    </plugin>
+  </gazebo>
+
+  <!-- 左脚 -->
+  <gazebo reference="leg_l6_link">
+    <mu1>1.5</mu1>
+    <mu2>2.5</mu2>
+    <self_collide>1</self_collide>
+    <kp value="1000000.0"/>
+    <kd value="100.0"/>
+    <maxVel>3</maxVel>
+    <minDepth>0.00</minDepth>
+  </gazebo>
+  <gazebo reference="l_foot_heel">
+    <mu1>1.5</mu1>
+    <mu2>2.5</mu2>
+    <self_collide>1</self_collide>
+    <kp value="1000000.0"/>
+    <kd value="100.0"/>
+    <maxVel>3</maxVel>
+    <minDepth>0.00</minDepth>
+  </gazebo>
+  <gazebo reference="l_foot_toe">
+    <mu1>1.5</mu1>
+    <mu2>2.5</mu2>
+    <self_collide>1</self_collide>
+    <kp value="1000000.0"/>
+    <kd value="100.0"/>
+    <maxVel>3</maxVel>
+    <minDepth>0.00</minDepth>
+  </gazebo>
+  <gazebo reference="lr_foot_heel">
+    <mu1>1.5</mu1>
+    <mu2>2.5</mu2>
+    <self_collide>1</self_collide>
+    <kp value="1000000.0"/>
+    <kd value="100.0"/>
+    <maxVel>3</maxVel>
+    <minDepth>0.00</minDepth>
+  </gazebo>
+  <gazebo reference="lr_foot_toe">
+    <mu1>1.5</mu1>
+    <mu2>2.5</mu2>
+    <self_collide>1</self_collide>
+    <kp value="1000000.0"/>
+    <kd value="100.0"/>
+    <maxVel>3</maxVel>
+    <minDepth>0.00</minDepth>
+  </gazebo>
+  <gazebo reference="ll_foot_heel">
+    <mu1>1.5</mu1>
+    <mu2>2.5</mu2>
+    <self_collide>1</self_collide>
+    <kp value="1000000.0"/>
+    <kd value="100.0"/>
+    <maxVel>3</maxVel>
+    <minDepth>0.00</minDepth>
+  </gazebo>
+  <gazebo reference="ll_foot_toe">
+    <mu1>1.5</mu1>
+    <mu2>2.5</mu2>
+    <self_collide>1</self_collide>
+    <kp value="1000000.0"/>
+    <kd value="100.0"/>
+    <maxVel>3</maxVel>
+    <minDepth>0.00</minDepth>
+  </gazebo>
+
+  <!-- 右脚 -->
+  <gazebo reference="leg_r6_link">
+    <mu1>1.5</mu1>
+    <mu2>2.5</mu2>
+    <self_collide>1</self_collide>
+    <kp value="1000000.0"/>
+    <kd value="100.0"/>
+    <maxVel>3</maxVel>
+    <minDepth>0.00</minDepth>
+  </gazebo>
+  <gazebo reference="r_foot_heel">
+    <mu1>1.5</mu1>
+    <mu2>2.5</mu2>
+    <self_collide>1</self_collide>
+    <kp value="1000000.0"/>
+    <kd value="100.0"/>
+    <maxVel>3</maxVel>
+    <minDepth>0.00</minDepth>
+  </gazebo>
+  <gazebo reference="r_foot_toe">
+    <mu1>1.5</mu1>
+    <mu2>2.5</mu2>
+    <self_collide>1</self_collide>
+    <kp value="1000000.0"/>
+    <kd value="100.0"/>
+    <maxVel>3</maxVel>
+    <minDepth>0.00</minDepth>
+  </gazebo>
+  <gazebo reference="rl_foot_toe">
+    <mu1>1.5</mu1>
+    <mu2>2.5</mu2>
+    <self_collide>1</self_collide>
+    <kp value="1000000.0"/>
+    <kd value="100.0"/>
+    <maxVel>3</maxVel>
+    <minDepth>0.00</minDepth>
+  </gazebo>
+  <gazebo reference="rl_foot_heel">
+    <mu1>1.5</mu1>
+    <mu2>2.5</mu2>
+    <self_collide>1</self_collide>
+    <kp value="1000000.0"/>
+    <kd value="100.0"/>
+    <maxVel>3</maxVel>
+    <minDepth>0.00</minDepth>
+  </gazebo>
+  <gazebo reference="rr_foot_toe">
+    <mu1>1.5</mu1>
+    <mu2>2.5</mu2>
+    <self_collide>1</self_collide>
+    <kp value="1000000.0"/>
+    <kd value="100.0"/>
+    <maxVel>3</maxVel>
+    <minDepth>0.00</minDepth>
+  </gazebo>
+  <gazebo reference="rr_foot_heel">
+    <mu1>1.5</mu1>
+    <mu2>2.5</mu2>
+    <self_collide>1</self_collide>
+    <kp value="1000000.0"/>
+    <kd value="100.0"/>
+    <maxVel>3</maxVel>
+    <minDepth>0.00</minDepth>
+  </gazebo>
+
+  <!-- 仿真插件 -->
+  <gazebo>
+    <plugin name="gazebo_shm_interface" filename="libgazebo_sim_shm_interface.so">
+      <!-- IMU配置 gazebo中fixed连接的link都只能获取第一个-->
+      <imu>
+        <frame_id>dummy_link</frame_id>
+      </imu>
+      
+      <!-- 关节配置 -->
+      <joints>
+        <!-- 左腿关节 -->
+        <joint><name>leg_l1_joint</name></joint>
+        <joint><name>leg_l2_joint</name></joint>
+        <joint><name>leg_l3_joint</name></joint>
+        <joint><name>leg_l4_joint</name></joint>
+        <joint><name>leg_l5_joint</name></joint>
+        <joint><name>leg_l6_joint</name></joint>
+        
+        <!-- 右腿关节 -->
+        <joint><name>leg_r1_joint</name></joint>
+        <joint><name>leg_r2_joint</name></joint>
+        <joint><name>leg_r3_joint</name></joint>
+        <joint><name>leg_r4_joint</name></joint>
+        <joint><name>leg_r5_joint</name></joint>
+        <joint><name>leg_r6_joint</name></joint>
+        
+        <!-- 左臂关节 -->
+        <joint><name>zarm_l1_joint</name></joint>
+        <joint><name>zarm_l2_joint</name></joint>
+        <joint><name>zarm_l3_joint</name></joint>
+        <joint><name>zarm_l4_joint</name></joint>
+        <joint><name>zarm_l5_joint</name></joint>
+        <joint><name>zarm_l6_joint</name></joint>
+        <joint><name>zarm_l7_joint</name></joint>
+        
+        <!-- 右臂关节 -->
+        <joint><name>zarm_r1_joint</name></joint>
+        <joint><name>zarm_r2_joint</name></joint>
+        <joint><name>zarm_r3_joint</name></joint>
+        <joint><name>zarm_r4_joint</name></joint>
+        <joint><name>zarm_r5_joint</name></joint>
+        <joint><name>zarm_r6_joint</name></joint>
+        <joint><name>zarm_r7_joint</name></joint>
+        
+        <!-- 头部关节 -->
+        <joint><name>zhead_1_joint</name></joint>
+        <joint><name>zhead_2_joint</name></joint>
+      </joints>
+      
+      <!-- 接触传感器配置 -->
+      <contacts>
+        <contact><link>ll_foot_toe</link></contact>
+        <contact><link>ll_foot_heel</link></contact>
+        <contact><link>lr_foot_toe</link></contact>
+        <contact><link>lr_foot_heel</link></contact>
+        <contact><link>rl_foot_toe</link></contact>
+        <contact><link>rl_foot_heel</link></contact>
+        <contact><link>rr_foot_toe</link></contact>
+        <contact><link>rr_foot_heel</link></contact>
+      </contacts>
+      </plugin>
+  </gazebo>
+  
 </robot>
