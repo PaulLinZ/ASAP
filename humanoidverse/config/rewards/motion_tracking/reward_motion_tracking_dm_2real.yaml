@@ -19,13 +19,13 @@ rewards:
       penalty_torques: -0.000001
       # penalty_dof_vel: -0.0001
       # penalty_dof_acc: -2.5e-8
-      penalty_action_rate: -0.5 # need to be tuned up to -0.5 for real robot
+      penalty_action_rate: -0.05 # need to be tuned up to -0.5 for real robot
       # penalty_feet_contact_forces: -0.01
       # penalty_stumble: -10.0
       
       # better for landing
-      penalty_feet_ori: -2.0
-      feet_heading_alignment: -0.1
+      penalty_feet_ori: 0
+      feet_heading_alignment: 0
       penalty_slippage: -1.0
 
       limits_dof_pos: -10.0
@@ -57,13 +57,13 @@ rewards:
   # locomotion_max_contact_force: 200.0
   # desired_feet_max_height_for_this_air: 0.2
 
-  reward_penalty_curriculum: False
+  reward_penalty_curriculum: True
   reward_initial_penalty_scale : 0.10
   reward_min_penalty_scale: 0.0
   reward_max_penalty_scale: 1.0
   reward_penalty_level_down_threshold: 40
-  reward_penalty_level_up_threshold: 42 # shortest motion in TairanTestbed is 92, therefore 46 is the middle point, we set 42 here for curriculum learning level up
-  reward_penalty_degree: 0.000003 # 0.00001
+  reward_penalty_level_up_threshold: 100 # shortest motion in TairanTestbed is 92, therefore 46 is the middle point, we set 42 here for curriculum learning level up
+  reward_penalty_degree: 0.00001 # 0.000003
   num_compute_average_epl: 10000
 
   reward_limit:
@@ -78,7 +78,7 @@ rewards:
       soft_dof_pos_min_limit: 0.95
       soft_dof_pos_curriculum_degree: 0.00000025
       soft_dof_pos_curriculum_level_down_threshold: 40
-      soft_dof_pos_curriculum_level_up_threshold: 42
+      soft_dof_pos_curriculum_level_up_threshold: 100
 
       soft_dof_vel_curriculum: True
       soft_dof_vel_initial_limit: 1.15
@@ -86,7 +86,7 @@ rewards:
       soft_dof_vel_min_limit: 0.95
       soft_dof_vel_curriculum_degree: 0.00000025
       soft_dof_vel_curriculum_level_down_threshold: 40
-      soft_dof_vel_curriculum_level_up_threshold: 42
+      soft_dof_vel_curriculum_level_up_threshold: 100
 
       soft_torque_curriculum: True
       soft_torque_initial_limit: 1.15
@@ -94,7 +94,7 @@ rewards:
       soft_torque_min_limit: 0.85
       soft_torque_curriculum_degree: 0.00000025
       soft_torque_curriculum_level_down_threshold: 40
-      soft_torque_curriculum_level_up_threshold: 42
+      soft_torque_curriculum_level_up_threshold: 100
 
   reward_penalty_reward_names : [
     "penalty_torques",

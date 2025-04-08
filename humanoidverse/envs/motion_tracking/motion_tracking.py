@@ -48,6 +48,7 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
             self.node = Node("motion_tracking")
             self.teleop_sub = self.node.create_subscription(Float64MultiArray, "vision_pro_data", self.teleop_callback, 1)
 
+        # import ipdb; ipdb.set_trace()
         if self.config.termination.terminate_when_motion_far and self.config.termination_curriculum.terminate_when_motion_far_curriculum:
             self.terminate_when_motion_far_threshold = self.config.termination_curriculum.terminate_when_motion_far_initial_threshold
             logger.info(f"Terminate when motion far threshold: {self.terminate_when_motion_far_threshold}")
@@ -241,6 +242,7 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         ref_body_pos_extend = motion_res["rg_pos_t"]    # body_rigid_pos
         self.ref_body_pos_extend[:] = ref_body_pos_extend # for visualization and analysis
         ref_body_vel_extend = motion_res["body_vel_t"] # [num_envs, num_markers, 3] body_rigid_vel
+        # import ipdb; ipdb.set_trace()
         self.ref_body_rot_extend = ref_body_rot_extend = motion_res["rg_rot_t"] # [num_envs, num_markers, 4]    body_rigid_rot
         ref_body_ang_vel_extend = motion_res["body_ang_vel_t"] # [num_envs, num_markers, 3]                     body_rigid_ang_vel
         ref_joint_pos = motion_res["dof_pos"] # [num_envs, num_dofs]    这个应该是一维的，不是三维的
@@ -293,18 +295,12 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         self.dif_global_body_ang_vel = ref_body_ang_vel_extend - self._rigid_body_ang_vel_extend    # body_vel_ang
         # ang_vel_reward = self._reward_teleop_body_ang_velocity_extend()
 
-
-
-        
         ## diff compute - kinematic joint position
         self.dif_joint_angles = ref_joint_pos - self.simulator.dof_pos  # dof_pos
         ## diff compute - kinematic joint velocity
         self.dif_joint_velocities = ref_joint_vel - self.simulator.dof_vel  # dof_vel
 
-        
-
-
-
+        # import ipdb; ipdb.set_trace()
         # marker_coords for visualization
         self.marker_coords[:] = ref_body_pos_extend.reshape(B, -1, 3)
 
@@ -342,7 +338,7 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
         heading_inv_rot_vr = heading_inv_rot.repeat(3,1)
         self._obs_vr_3point_pos = my_quat_rotate(heading_inv_rot_vr.view(-1, 4), vr_2root_pos.view(-1, 3)).view(env_batch_size, -1)
         #################### Deepmimic phase ###################### 
-
+        # import ipdb; ipdb.set_trace()
         self._ref_motion_length = self._motion_lib.get_motion_length(self.motion_ids)
         self._ref_motion_phase = motion_times / self._ref_motion_length
         if not (torch.all(self._ref_motion_phase >= 0) and torch.all(self._ref_motion_phase <= 1.05)): # hard coded 1.05 because +1 will exceed 1
@@ -384,16 +380,17 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
             if not self.config.use_teleop_control:
                 # draw marker joints
                 # import ipdb; ipdb.set_trace()
+                # R = 0.1
+                # len = 0
                 for pos_id, pos_joint in enumerate(self.marker_coords[env_id]): # idx 0 torso (duplicate with 11)
                     if self.config.robot.motion.visualization.customize_color:
                         color_inner = self.config.robot.motion.visualization.marker_joint_colors[pos_id % len(self.config.robot.motion.visualization.marker_joint_colors)]
                     else:
                         color_inner = (0.3, 0.3, 0.3)
                     color_inner = tuple(color_inner)
-                    
                     # import ipdb; ipdb.set_trace()
                     self.simulator.draw_sphere(pos_joint, 0.04, color_inner, env_id, pos_id)
-
+                # print(f"len: {len}")
 
             else:
                 # draw teleop joints
@@ -611,6 +608,7 @@ class LeggedRobotMotionTracking(LeggedRobotBase):
     
     # 这三个位置会给单独的跟踪权重？
     def _reward_teleop_vr_3point(self):
+        # import ipdb; ipdb.set_trace()
         vr_3point_diff = self.dif_global_body_pos[:, self.motion_tracking_id, :]    # self.motion_tracking_id:[24,25,26]
         vr_3point_dist = (vr_3point_diff**2).mean(dim=-1).mean(dim=-1)
         r_vr_3point = torch.exp(-vr_3point_dist / self.config.rewards.reward_tracking_sigma.teleop_vr_3point_pos)

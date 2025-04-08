@@ -216,7 +216,7 @@ robot:
     # xml_file: "biped_s45/xml/${robot.asset.robot_type}.xml"
     xml_file: "biped_s45/xml/${robot.asset.robot_type}.xml"
     robot_type: biped_s45
-    self_collisions: 1 # 1 to disable, 0 to enable self collisions
+    self_collisions: 0 # 1 to disable, 0 to enable self collisions
     default_dof_drive_mode: 3
 
     fix_base_link: False # TEST: fix base link to world

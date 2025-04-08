@@ -438,6 +438,7 @@ class IsaacGym(BaseSimulator):
         asset_file = self.robot_config.asset.xml_file
         asset_path = os.path.join(asset_root, asset_file)
         model = mujoco.MjModel.from_xml_path(asset_path)
+        # import ipdb; ipdb.set_trace()
         return torch.from_numpy(model.actuator_ctrlrange[:, 0]).to(self.device).to(torch.float).abs()
 
     def get_velocity_limits_from_urdf(self):

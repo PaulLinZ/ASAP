@@ -185,6 +185,8 @@ class BaseTask():
         # knee_names = [s for s in self.body_names if self.config.robot.knee_name in s]
         feet_names = [s for s in self.body_names if s in self.config.robot.foot_name]
         knee_names = [s for s in self.body_names if s in self.config.robot.knee_name]
+        # import ipdb; ipdb.set_trace()
+        
         penalized_contact_names = []
         for name in self.config.robot.penalize_contacts_on:
             penalized_contact_names.extend([s for s in self.body_names if name in s])

@@ -769,6 +769,7 @@ class LeggedRobotBase(BaseTask):
         
         return heading_diff_left + heading_diff_right
     
+    # 计算机器人左右脚当前姿态相对于重力方向的xy投影长度，以量化脚部姿态的不稳定程度
     def _reward_penalty_feet_ori(self):
         # import ipdb; ipdb.set_trace()
         left_quat = self.simulator._rigid_body_rot[:, self.feet_indices[0]]
